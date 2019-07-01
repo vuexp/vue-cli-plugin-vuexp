@@ -21,7 +21,7 @@ module.exports = async (api, options, rootOptions) => {
     templateTypePathModifer: options.templateType,
 
     // Get the location to the native app directory
-    nativeAppPathModifier: options.isNativeOnly ? 'app/' : 'src/',
+    nativeAppPathModifier: 'src/',
 
     // Determine the path to App_Resources
     get appResourcesPathModifier() {
@@ -79,6 +79,7 @@ module.exports = async (api, options, rootOptions) => {
     },
     dependencies: {
       'nativescript-vue': '^2.2.2',
+      vuexp: '^0.3.0',
       'tns-core-modules': '^5.4.1'
     },
     devDependencies: {
@@ -94,26 +95,13 @@ module.exports = async (api, options, rootOptions) => {
   });
 
   // add scripts when we are also developing for the web
-  if (!options.isNativeOnly) {
-    api.extendPackage({
-      scripts: {
-        'serve:web': 'vue-cli-service serve --mode development.web',
-        'build:web': 'vue-cli-service build --mode production.web'
-        //'inspect:web': 'npm run setup-webpack-config && vue inspect -- --env.web > out-web.js'
-      }
-    });
-
-    // if we are using NativeScript-Vue-Web then add the package
-    if (options.templateType == 'nvw') {
-      api.extendPackage({
-        dependencies: {
-          'nativescript-vue-web': '^0.9.4'
-        }
-      });
+  api.extendPackage({
+    scripts: {
+      'serve:web': 'vue-cli-service serve --mode development.web',
+      'build:web': 'vue-cli-service build --mode production.web'
+      //'inspect:web': 'npm run setup-webpack-config && vue inspect -- --env.web > out-web.js'
     }
-  } else {
-    //
-  }
+  });
 
   if (rootOptions.router) {
     api.extendPackage({
@@ -182,14 +170,6 @@ module.exports = async (api, options, rootOptions) => {
     }
     // we will be replacing these
     delete pkg.scripts['serve'], delete pkg.scripts['build'];
-
-    if (options.isNativeOnly) {
-      delete pkg.browserslist;
-    }
-
-    if (options.templateType !== 'nvw') {
-      delete pkg.dependencies['nativescript-vue-web'];
-    }
   });
 
   console.log('doing template rendering');
@@ -208,44 +188,24 @@ module.exports = async (api, options, rootOptions) => {
     );
   });
 
-  // If Native only or Dual Native and Web Project.
-  if (!options.isNativeOnly) {
-    api.render(async () => {
-      // render src directory
-      await renderDirectoryStructure(
-        api,
-        options,
-        rootOptions,
-        genConfig.jsOrTs,
-        commonRenderOptions,
-        path.join('templates', genConfig.templateTypePathModifer, 'src'),
-        genConfig.dirPathPrefix + 'src'
-      );
+  api.render(async () => {
+    // render src directory
+    await renderDirectoryStructure(
+      api,
+      options,
+      rootOptions,
+      genConfig.jsOrTs,
+      commonRenderOptions,
+      path.join('templates', genConfig.templateTypePathModifer, 'src'),
+      genConfig.dirPathPrefix + 'src'
+    );
 
-      // add router statements to src/main.*s
-      await vueRouterSetup(api, genConfig.dirPathPrefix, genConfig.jsOrTs);
+    // add router statements to src/main.*s
+    await vueRouterSetup(api, genConfig.dirPathPrefix, genConfig.jsOrTs);
 
-      // add vuex statements to src/main.*s
-      await vuexSetup(api, options, genConfig.dirPathPrefix, genConfig.jsOrTs, genConfig.nativeAppPathModifier);
-    });
-  } else {
-    // Is Native Only
-    api.render(async () => {
-      // render app directory
-      await renderDirectoryStructure(
-        api,
-        options,
-        rootOptions,
-        genConfig.jsOrTs,
-        commonRenderOptions,
-        path.join('templates', genConfig.templateTypePathModifer, 'src'),
-        genConfig.dirPathPrefix + genConfig.nativeAppPathModifier.slice(0, -1)
-      );
-
-      // add vuex statements to app/main.*s
-      await vuexSetup(api, options, genConfig.dirPathPrefix, genConfig.jsOrTs);
-    });
-  }
+    // add vuex statements to src/main.*s
+    await vuexSetup(api, options, genConfig.dirPathPrefix, genConfig.jsOrTs, genConfig.nativeAppPathModifier);
+  });
 
   api.onCreateComplete(async () => {
     // make changes to .gitignore
@@ -256,11 +216,6 @@ module.exports = async (api, options, rootOptions) => {
 
     // create nsconfig.json in ./ or ./ns-example
     nsconfigSetup(genConfig.dirPathPrefix, api.resolve('nsconfig.json'), genConfig.nativeAppPathModifier, genConfig.appResourcesPathModifier, options);
-
-    // copy over .vue with native.vue files
-    if (options.isNativeOnly) {
-      nativeOnlyRenameFiles(genConfig.dirPathPrefix + genConfig.nativeAppPathModifier.slice(0, -1));
-    }
 
     // remove router config for projects that don't use vue-router
     if (!rootOptions.router) {
@@ -303,40 +258,6 @@ module.exports = async (api, options, rootOptions) => {
           throw err;
         }
       }
-
-      // for new projects that are native only, move files/dirs and delete others
-      if (options.isNativeOnly) {
-        // Do these synchronously so that when we delete the ./src directory below
-        // we don't try and move a file that no longer exists
-        try {
-          // move store.js file from ./src to ./app
-          if (api.hasPlugin('vuex')) {
-            fs.moveSync('./src/store' + genConfig.jsOrTs, genConfig.dirPathPrefix + genConfig.nativeAppPathModifier + 'store' + genConfig.jsOrTs, {
-              overwrite: true
-            });
-          }
-        } catch (err) {
-          throw err;
-        }
-        // remove src directory as we don't need it any longer
-        fs.remove('./src', (err) => {
-          if (err) throw err;
-        });
-        // remove public directory as we don't need it any longer
-        fs.remove('./public', (err) => {
-          if (err) throw err;
-        });
-        // rename main.native.js to main.js
-        fs.moveSync(
-          genConfig.dirPathPrefix + genConfig.nativeAppPathModifier + 'main.native' + genConfig.jsOrTs,
-          genConfig.dirPathPrefix + genConfig.nativeAppPathModifier + 'main' + genConfig.jsOrTs,
-          {
-            overwrite: true
-          }
-        );
-
-        nativeOnlyPackageJsonSetup(genConfig.dirPathPrefix + genConfig.nativeAppPathModifier + 'package.json');
-      }
     } else if (!options.isNewProject) {
       // copy type files from ./src to ./ns-example
       if (api.hasPlugin('typescript')) {
@@ -347,26 +268,6 @@ module.exports = async (api, options, rootOptions) => {
         fs.copy('./src/shims-vue.d.ts', path.join(genConfig.dirPathPrefix, 'types/shims-vue.d.ts'), (err) => {
           if (err) throw err;
         });
-      }
-
-      if (options.isNativeOnly) {
-        // move store.js file from ./src to ./ns-example/app
-        if (api.hasPlugin('vuex')) {
-          fs.copy('./src/store' + genConfig.jsOrTs, genConfig.dirPathPrefix + genConfig.nativeAppPathModifier + 'store' + genConfig.jsOrTs, (err) => {
-            if (err) throw err;
-          });
-        }
-
-        // rename main.native.js to main.js
-        fs.moveSync(
-          genConfig.dirPathPrefix + genConfig.nativeAppPathModifier + 'main.native' + genConfig.jsOrTs,
-          genConfig.dirPathPrefix + genConfig.nativeAppPathModifier + 'main' + genConfig.jsOrTs,
-          {
-            overwrite: true
-          }
-        );
-
-        nativeOnlyPackageJsonSetup(genConfig.dirPathPrefix + genConfig.nativeAppPathModifier + 'package.json');
       }
     } else {
       // nothing to do here
@@ -395,18 +296,12 @@ const vueRouterSetup = (module.exports.vueRouterSetup = async (api, filePathPref
 const vuexSetup = (module.exports.vuexSetup = async (api, options, filePathPrefix, jsOrTs, nativeAppPathModifier) => {
   try {
     if (api.hasPlugin('vuex')) {
-      if (!options.isNativeOnly) {
-        api.injectImports(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `import store from './store';`);
-        api.injectRootOptions(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `store`);
+      api.injectImports(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `import store from './store';`);
+      api.injectRootOptions(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `store`);
 
-        // if we're using Nativescript-Vue-Web, then we have to modify the main.native file
-        api.injectImports(filePathPrefix.replace(/.\//, '') + 'src/main.native' + jsOrTs, `import store from './store';`);
-        api.injectRootOptions(filePathPrefix.replace(/.\//, '') + 'src/main.native' + jsOrTs, `store`);
-      } else {
-        // if it's native only, it will not do anything in /src directory
-        api.injectImports(filePathPrefix.replace(/.\//, '') + nativeAppPathModifier + 'main' + jsOrTs, `import store from './store';`);
-        api.injectRootOptions(filePathPrefix.replace(/.\//, '') + nativeAppPathModifier + 'main' + jsOrTs, `store`);
-      }
+      // if we're using Nativescript-Vue-Web, then we have to modify the main.native file
+      api.injectImports(filePathPrefix.replace(/.\//, '') + 'src/main.native' + jsOrTs, `import store from './store';`);
+      api.injectRootOptions(filePathPrefix.replace(/.\//, '') + 'src/main.native' + jsOrTs, `store`);
     }
   } catch (err) {
     throw err;
@@ -494,32 +389,30 @@ const writeRootFiles = (module.exports.writeRootFiles = async (api, options, fil
     );
 
     // only write these out if we are also developing for the web
-    if (!options.isNativeOnly) {
-      console.log('dual components env files');
-      const envDevelopmentWeb = 'NODE_ENV=development' + newline + 'VUE_APP_PLATFORM=web' + newline + 'VUE_APP_MODE=web';
-      const envProductionWeb = 'NODE_ENV=production' + newline + 'VUE_APP_PLATFORM=web' + newline + 'VUE_APP_MODE=web';
+    console.log('dual components env files');
+    const envDevelopmentWeb = 'NODE_ENV=development' + newline + 'VUE_APP_PLATFORM=web' + newline + 'VUE_APP_MODE=web';
+    const envProductionWeb = 'NODE_ENV=production' + newline + 'VUE_APP_PLATFORM=web' + newline + 'VUE_APP_MODE=web';
 
-      fs.writeFileSync(
-        filePathPrefix + '.env.development.web',
-        envDevelopmentWeb,
-        {
-          encoding: 'utf8'
-        },
-        (err) => {
-          if (err) throw err;
-        }
-      );
-      fs.writeFileSync(
-        filePathPrefix + '.env.production.web',
-        envProductionWeb,
-        {
-          encoding: 'utf8'
-        },
-        (err) => {
-          if (err) throw err;
-        }
-      );
-    }
+    fs.writeFileSync(
+      filePathPrefix + '.env.development.web',
+      envDevelopmentWeb,
+      {
+        encoding: 'utf8'
+      },
+      (err) => {
+        if (err) throw err;
+      }
+    );
+    fs.writeFileSync(
+      filePathPrefix + '.env.production.web',
+      envProductionWeb,
+      {
+        encoding: 'utf8'
+      },
+      (err) => {
+        if (err) throw err;
+      }
+    );
 
     // only write this out if we are using typescript
     if (api.hasPlugin('typescript')) {
@@ -777,27 +670,12 @@ const tsconfigSetup = (module.exports.tsconfigSetup = async (options, dirPathPre
       if (!tsConfigContent.include.includes('tests/**/*.tsx')) tsConfigContent.include.push('tests/**/*.tsx');
     }
 
-    if (options.isNativeOnly) {
-      // edit some of the options in compilerOptions.paths object array
-      tsConfigContent.compilerOptions.paths['src/*'] = [nativeAppPathModifier + '*'];
+    tsConfigContent.compilerOptions.paths['src/*'] = [nativeAppPathModifier + '*'];
 
-      // remove some items from the include array
-      tsConfigContent.include = await removeFromArray(tsConfigContent.include, 'src/**/*.ts');
-      tsConfigContent.include = await removeFromArray(tsConfigContent.include, 'src/**/*.tsx');
-      tsConfigContent.include = await removeFromArray(tsConfigContent.include, 'src/**/*.vue');
-
-      fs.writeJsonSync(tsConfigPath, tsConfigContent, {
-        spaces: 2,
-        encoding: 'utf8'
-      });
-    } else {
-      tsConfigContent.compilerOptions.paths['src/*'] = [nativeAppPathModifier + '*'];
-
-      fs.writeJsonSync(tsConfigPath, tsConfigContent, {
-        spaces: 2,
-        encoding: 'utf8'
-      });
-    }
+    fs.writeJsonSync(tsConfigPath, tsConfigContent, {
+      spaces: 2,
+      encoding: 'utf8'
+    });
   } catch (err) {
     throw err;
   }

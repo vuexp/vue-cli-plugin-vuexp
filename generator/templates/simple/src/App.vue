@@ -1,6 +1,5 @@
 <%_ if (rootOptions.router) { _%>
 <%# -------------------- IS Using vue-router  -------------------- -%>
-<%_   if (!options.isNativeOnly) { _%>
 <template web>
   <div class="w-page">
     <nav>
@@ -17,9 +16,6 @@
   </div>
 </template>
 <template native>
-<%_   } else { _%>
-<template>
-<%_   } _%>
   <Page>
     <ActionBar :title="navbarTitle"/>
     <GridLayout rows="auto, auto">
@@ -30,7 +26,6 @@
 </template>
 <%_ } else { _%>
 <%# -------------------- IS NOT Using vue-router  -------------------- -%>
-<%_   if (!options.isNativeOnly) { _%>
 <template web>
   <div class="w-page">
     <div class="w-container">
@@ -40,9 +35,6 @@
   </div>
 </template>
 <template native>
-<%_   } else { _%>
-<template>
-<%_   } _%>
   <Page>
     <ActionBar :title="navbarTitle"/>
     <GridLayout rows="auto, auto">

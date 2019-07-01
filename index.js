@@ -138,7 +138,6 @@ const resolveExtensions = (config, ext) => {
 const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
   console.log('starting nativeConfig');
   process.env.VUE_CLI_TARGET = 'nativescript';
-  const isNativeOnly = !fs.pathExistsSync(resolve(projectRoot, 'src'));
   const tsconfigFileName = 'tsconfig.json';
 
   const appComponents = ['tns-core-modules/ui/frame', 'tns-core-modules/ui/frame/activity'];
@@ -153,7 +152,7 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
     // The 'appPath' and 'appResourcesPath' values are fetched from
     // the nsconfig.json configuration file
     // when bundling with `tns run android|ios --bundle`.
-    appPath = isNativeOnly === true ? 'app' : 'src',
+    appPath = 'src',
     appResourcesPath = join(appPath, 'App_Resources'),
 
     // You can provide the following flags when running 'tns run android|ios'
@@ -262,11 +261,11 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
       .set('~', appFullPath)
       .set('@', appFullPath)
       .set('src', api.resolve('src'))
-      .set('app', isNativeOnly ? api.resolve('app') : api.resolve('src'))
-      .set('assets', resolve(isNativeOnly ? api.resolve('app') : api.resolve('src'), 'assets'))
-      .set('components', resolve(isNativeOnly ? api.resolve('app') : api.resolve('src'), 'components'))
-      .set('fonts', resolve(isNativeOnly ? api.resolve('app') : api.resolve('src'), 'fonts'))
-      .set('styles', resolve(isNativeOnly ? api.resolve('app') : api.resolve('src'), 'styles'))
+      .set('app', api.resolve('src'))
+      .set('assets', resolve(api.resolve('src'), 'assets'))
+      .set('components', resolve(api.resolve('src'), 'components'))
+      .set('fonts', resolve(api.resolve('src'), 'fonts'))
+      .set('styles', resolve(api.resolve('src'), 'styles'))
       .set('root', projectRoot)
       .set('vue$', 'nativescript-vue')
       .end()
@@ -856,7 +855,7 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
           }
         ],
         {
-          context: resolve(isNativeOnly === true ? appFullPath : api.resolve('src')),
+          context: resolve(api.resolve('src')),
           ignore: [`${relative(appPath, appResourcesFullPath)}/**`]
         }
       ])
