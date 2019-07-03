@@ -9,8 +9,8 @@ const newline = process.platform === 'win32' ? '\r\n' : '\n';
 module.exports = async (api, options, rootOptions) => {
   const genConfig = {
     // if it is a new project changes will be written as they normally would with any plugin
-    // if it is an existing project, changes will be added to the ./ns-example directory
-    dirPathPrefix: options.isNewProject === true ? './' : './ns-example/',
+    // if it is an existing project, changes will be added to the ./vuexp-example directory
+    dirPathPrefix: options.isNewProject === true ? './' : './vuexp-example/',
 
     // simple typescript detection and then variable is passed to multiple templating functions
     // to simply change the file's extension
@@ -211,10 +211,10 @@ module.exports = async (api, options, rootOptions) => {
     // make changes to .gitignore
     gitignoreAdditions(api);
 
-    // create files in ./ or ./ns-example
+    // create files in ./ or ./vuexp-example
     writeRootFiles(api, options, genConfig.dirPathPrefix);
 
-    // create nsconfig.json in ./ or ./ns-example
+    // create nsconfig.json in ./ or ./vuexp-example
     nsconfigSetup(genConfig.dirPathPrefix, api.resolve('nsconfig.json'), genConfig.nativeAppPathModifier, genConfig.appResourcesPathModifier, options);
 
     // remove router config for projects that don't use vue-router
@@ -245,9 +245,9 @@ module.exports = async (api, options, rootOptions) => {
 
     // the main difference between New and Existing for this section is
     // that for New projects we are moving files around, but for
-    // existing projects we are copying files into ./ns-example
+    // existing projects we are copying files into ./vuexp-example
     if (options.isNewProject) {
-      // move type files out of src to ./ or ./ns-example
+      // move type files out of src to ./ or ./vuexp-example
       if (api.hasPlugin('typescript')) {
         // Do these synchronously so in the event we delete the ./src directory in a native only
         // situation below we don't try and move a file that no longer exists
@@ -259,7 +259,7 @@ module.exports = async (api, options, rootOptions) => {
         }
       }
     } else if (!options.isNewProject) {
-      // copy type files from ./src to ./ns-example
+      // copy type files from ./src to ./vuexp-example
       if (api.hasPlugin('typescript')) {
         fs.copy('./src/shims-tsx.d.ts', path.join(genConfig.dirPathPrefix, 'types/shims-tsx.d.ts'), (err) => {
           if (err) throw err;
@@ -278,7 +278,7 @@ module.exports = async (api, options, rootOptions) => {
 // setup vue-router options
 // will not setup any vue-router options for native app
 // for new projects it will write to changes as normal
-// and for existing projects it will write  changes to the ./ns-example directory
+// and for existing projects it will write  changes to the ./vuexp-example directory
 const vueRouterSetup = (module.exports.vueRouterSetup = async (api, filePathPrefix, jsOrTs) => {
   try {
     if (api.hasPlugin('vue-router')) {
@@ -292,7 +292,7 @@ const vueRouterSetup = (module.exports.vueRouterSetup = async (api, filePathPref
 
 // setup Vuex options
 // for new projects it will write to changes as normal
-// and for existing projects it will write  changes to the ./ns-example directory
+// and for existing projects it will write  changes to the ./vuexp-example directory
 const vuexSetup = (module.exports.vuexSetup = async (api, options, filePathPrefix, jsOrTs, nativeAppPathModifier) => {
   try {
     if (api.hasPlugin('vuex')) {
@@ -310,7 +310,7 @@ const vuexSetup = (module.exports.vuexSetup = async (api, options, filePathPrefi
 
 // write out babel.config.js options by adding options and replacing the base @vue/app
 // for new projects it will write to the root of the project
-// and for existing projects it will write it to the ./ns-example directory
+// and for existing projects it will write it to the ./vuexp-example directory
 const applyBabelConfig = (module.exports.applyBabelConfig = async (api, filePath) => {
   const babelReplaceOptions = {
     files: '',
@@ -339,7 +339,7 @@ const applyBabelConfig = (module.exports.applyBabelConfig = async (api, filePath
 // write out files in the root of the project
 // this includes the environment files as well as a global types file for
 // Typescript projects.  for new projects it will write files to the root of the project
-// and for existing projects it will write it to the ./ns-example directory
+// and for existing projects it will write it to the ./vuexp-example directory
 const writeRootFiles = (module.exports.writeRootFiles = async (api, options, filePathPrefix) => {
   try {
     const envDevelopmentAndroid = 'NODE_ENV=development' + newline + 'VUE_APP_PLATFORM=android' + newline + 'VUE_APP_MODE=native';
@@ -471,7 +471,7 @@ const gitignoreAdditions = (module.exports.gitignoreAdditions = async (api) => {
 });
 
 // setup nsconfig.json file.  for new projects it will write to the root of the project
-// and for existing projects it will write it to the ./ns-example directory
+// and for existing projects it will write it to the ./vuexp-example directory
 const nsconfigSetup = (module.exports.nsconfigSetup = async (dirPathPrefix, nsconfigPath, nativeAppPathModifier, appResourcesPathModifier, options) => {
   let nsconfigContent = '';
 

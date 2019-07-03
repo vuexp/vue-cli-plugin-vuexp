@@ -1,8 +1,8 @@
-# nativescript-vue-cli-plugin
+# vuexp-cli-plugin
 
-Nativescript-Vue Plugin for [vue-cli@3.0](https://github.com/vuejs/vue-cli)
+Vuexp Plugin for [vue-cli@3.0](https://github.com/vuejs/vue-cli)
 
-This plugin will integrate [Nativescript-Vue](https://nativescript-vue.org/) into new and existing Vue projects.  Additionally, it will allow for the choice of developing for Native only environments or Native __and__ Web environments under a single project structure.  In addition, choosing to integrate [Nativescript-Vue-Web](https://github.com/Nativescript-Vue-Web/Nativescript-Vue-Web), will allow for the development of Web components with a NativeScript-Vue like syntax that has the benefit of allowing for the sharing of components between the Native and Web sides of the project.  This helps reduce the amount of code, maintenence needs, and the amount of time needed for development activities.
+This plugin will integrate [Vuexp](https://vuexp.com/) into new and existing Vue projects. Additionally, it will allow for Native __and__ Web environments under a single project structure.  In addition, will allow for the development of Web components with a NativeScript-Vue like syntax that has the benefit of allowing for the sharing of components between the Native and Web sides of the project.  This helps reduce the amount of code, maintenance needs, and the amount of time needed for development activities.
 
 ## Sharing logic in a single Web and Native capable component
 The key feature of this plugin is that it will allow you to compose SFC's that contain both Web and Native structures in them. If your component has exactly the same logic (`<script>` block) but you want different templates for web and native, you can use the special `<template web>` and `<template native>`. Also, if you need define different styles you can use `<style web>` and `<style native>`.
@@ -87,30 +87,25 @@ Generate a project using vue-cli 3.0
 vue create my-app
 ```
 
-Before installing the Nativescript-Vue CLI 3 Plugin, make sure to commit or stash changes in case you need to revert.
+Before installing the Vuexp CLI 3 Plugin, make sure to commit or stash changes in case you need to revert.
 
-To install the Nativescript-Vue CLI 3 Plugin...
+To install the Vuexp CLI 3 Plugin...
 ```bash
 cd my-app
-vue add vue-cli-plugin-nativescript-vue
+vue add vue-cli-plugin-vuexp
 ```
 
 ## Invocation Prompts
 1.  Enter a unique application identifier
     * Accepting the default is fine for testing
 2.  Use HTML5 history mode? (Default: hash mode)
-    * Required parameter for the cli core generator when vue-router is used
+    * Required parameter for the cli core generator when vuexp-router is used
 3.  Is this a brand new project? (Default: Yes)
-    * By choosing `No`, the plugin will try and be as non-destructive as possible to an existing project.  It will do this by adding a folder into root named `ns-example` and add files into there to provide examples of how a project would change.
+    * By choosing `No`, the plugin will try and be as non-destructive as possible to an existing project.  It will do this by adding a folder into root named `vuexp-example` and add files into there to provide examples of how a project would change.
     * These changes will factor in answers to the other questions and adjust accordingly.  Regardless of the answer, the plugin will install packages and adjust `package.json` as necessary to prep the project.
-4.  Dual Native AND Web development experience or a Native only? (Default: Dual)
-    * By default, the plugin will assume you want to develop for the Web and Native environments within the same project.  As such, there will be two sides to the project where web environments will be actively developed within `/src` and Native environments will be developed within `/app` unless you choose to integrate `Nativescript-Vue-Web` and all files will be placed in `/src`.
-    * Warning: Choosing to develop for Native only will move the main entry point of the project and development folder to `/app`, it will copy the necessary files and then delete `/src`.
-    * By choosing `Dual`, you will be able to bring your own component framework into the web portion of the project.  `NativeScript-Vue` [cannot use vue-router](https://nativescript-vue.org/en/docs/routing/vue-router/) currently, so you will have to provide your own manual routing.  The templated options deployed with the plugin will show how to do basic manual routing.
-5.  What type of template do you want to start with? (Default: Simple)
-    * Simple is just a simple setup with a header and basic routing.
-    * [Nativescript-Vue-Web](https://github.com/Nativescript-Vue-Web/Nativescript-Vue-Web) - The Simple template, but with NS-Vue like syntax for web components.  This option should only appear if you have chosen to develop in the Dual Web and Native environments. This option will effecively integrate a web component framework that will allow you to develop components that can be used in the Web and Native side of the project.  It uses `NativeScript-Vue` like syntax on components which will allow for the sharing of components between NativeScript and Web.
-    * Sidebar (currently disabled), will allow you to start with a project that includes a fixed header and pop-out sidebar menu.
+4.  What type of template do you want to start with? (Default: Simple)
+    * Simple is just a simple setup with a header and basic routing with [Vuexp](https://github.com/vuexp/vuexp) components.
+    * Advanced (currently disabled), will allow you to start with a project that includes a fixed header and pop-out sidebar menu.
     * We expect to add more templates in the future as use cases come up.
 
 ## Running the project
