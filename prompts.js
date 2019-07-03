@@ -11,7 +11,7 @@ module.exports = [
         return `Invalid application identifier.
 A valid identifier:
  - must contain two or more strings separated by a dot
- - each string must start with a letter<
+ - each string must start with a letter
  - each string can only contain numbers, letters and the _ character
 Example: com.company.app`;
       }

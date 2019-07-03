@@ -87,7 +87,7 @@ Generate a project using vue-cli 3.0
 vue create my-app
 ```
 
-Before installing the Vuexp CLI 3 Plugin, make sure to commit or stash changes in case you need to revert.
+Before installing the the plugin, make sure to commit or stash changes in case you need to revert.
 
 To install the Vuexp CLI 3 Plugin...
 ```bash
