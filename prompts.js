@@ -32,22 +32,6 @@ Example: com.company.app`;
     default: true
   },
   {
-    name: 'isNativeOnly',
-    type: 'list',
-    message: 'Dual Native AND Web development experience or a Native only? (Default: Dual)',
-    choices: [
-      {
-        name: 'Dual Native AND Web',
-        value: false
-      },
-      {
-        name: 'Native only',
-        value: true
-      }
-    ],
-    default: false
-  },
-  {
     name: 'templateType',
     type: 'list',
     message: 'What type of template do you want to start with? (Default: Simple)',
@@ -57,15 +41,8 @@ Example: com.company.app`;
         value: 'simple'
       },
       {
-        name: 'Nativescript-Vue-Web - The Simple template, but with NS-Vue like syntax for web components',
-        value: 'nvw',
-        disabled: (answers) => {
-          return answers.isNativeOnly === true;
-        }
-      },
-      {
-        name: 'Sidebar (not yet implemented)',
-        value: 'sidebar',
+        name: 'Advanced (not yet implemented)',
+        value: 'advanced',
         disabled: true
       }
     ],
