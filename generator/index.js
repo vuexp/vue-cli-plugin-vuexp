@@ -80,7 +80,10 @@ module.exports = async (api, options, rootOptions) => {
     dependencies: {
       'nativescript-vue': '^2.2.2',
       vuexp: '^0.3.0',
-      'tns-core-modules': '^5.4.1'
+      'tns-core-modules': '^5.4.1',
+      'nativescript-background-http': '^3.4.0',
+      'nativescript-imagepicker': 'git://github.com/mylmz10/nativescript-mediapicker.git',
+      'nativescript-mediafilepicker': '2.0.15'
     },
     devDependencies: {
       'nativescript-dev-webpack': '^0.24.0',
@@ -173,7 +176,7 @@ module.exports = async (api, options, rootOptions) => {
   });
 
   console.log('doing template rendering');
-
+  
   // render App_Resources folder
   api.render(async () => {
     // eslint-disable-next-line prettier/prettier

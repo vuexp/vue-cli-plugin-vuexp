@@ -1,4 +1,6 @@
 import Vue from 'nativescript-vue';
+import registerComponents from './componentRegisterer';
+
 <%_ if (rootOptions.router) { _%>
 import Navigator from 'nativescript-vue-navigator'
 <%_ } _%>
@@ -16,6 +18,7 @@ const routes = options.routes.reduce((data, route) => {
 }, {});
 
 Vue.use(Navigator, { routes });
+registerComponents(Vue);
 <%_ } _%>
 
 // Set the following to `true` to hide the logs created by nativescript-vue
