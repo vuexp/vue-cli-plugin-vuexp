@@ -63,7 +63,7 @@ module.exports = async (api, options, rootOptions) => {
     scripts: {
       'build:android': 'npm run setup-webpack-config && tns build android --bundle --env.production && npm run remove-webpack-config',
       'build:ios': 'npm run setup-webpack-config && tns build ios --bundle --env.production && npm run remove-webpack-config',
-      'remove-webpack-config': 'node ./node_modules/vue-cli-plugin-nativescript-vue/lib/scripts/webpack-maintenance post',
+      'remove-webpack-config': 'node ./node_modules/vue-cli-plugin-vuexp/lib/scripts/webpack-maintenance post',
       'serve:android': 'npm run setup-webpack-config && tns run android --bundle --env.development',
       'serve:ios': 'npm run setup-webpack-config && tns run ios --bundle --env.development',
       // 'inspect:android': 'npm run setup-webpack-config && vue inspect -- --env.android > out-android.js',
@@ -72,7 +72,7 @@ module.exports = async (api, options, rootOptions) => {
       'debug:ios': 'npm run setup-webpack-config && tns debug ios --bundle --env.development',
       'preview:android': 'npm run setup-webpack-config && tns preview --bundle --env.development --env.android',
       'preview:ios': 'npm run setup-webpack-config && tns preview --bundle --env.development --env.ios',
-      'setup-webpack-config': 'node ./node_modules/vue-cli-plugin-nativescript-vue/lib/scripts/webpack-maintenance pre',
+      'setup-webpack-config': 'node ./node_modules/vue-cli-plugin-vuexp/lib/scripts/webpack-maintenance pre',
       'clean:platforms': 'rimraf platforms',
       'clean:android': 'rimraf platforms/android',
       'clean:ios': 'rimraf platforms/ios'

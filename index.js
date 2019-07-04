@@ -118,17 +118,15 @@ module.exports = (api, projectOptions) => {
   const platform = env && ((env.android && 'android') || (env.ios && 'ios') || (env.web && 'web'));
   // console.log('platform - ', platform);
 
-  if (!platform) {
-    throw new Error('You need to provide a target platform!');
+  if (platform) {
+    const projectRoot = api.service.context;
+    const appMode = platform === 'android' ? 'native' : platform === 'ios' ? 'native' : 'web';
+
+    // setup output directory depending on if we're building for web or native
+    projectOptions.outputDir = join(projectRoot, appMode === 'web' ? 'dist' : nsWebpack.getAppPath(platform, projectRoot));
+
+    return appMode === 'web' ? webConfig(api, projectOptions, env, projectRoot) : nativeConfig(api, projectOptions, env, projectRoot, platform);
   }
-
-  const projectRoot = api.service.context;
-  const appMode = platform === 'android' ? 'native' : platform === 'ios' ? 'native' : 'web';
-
-  // setup output directory depending on if we're building for web or native
-  projectOptions.outputDir = join(projectRoot, appMode === 'web' ? 'dist' : nsWebpack.getAppPath(platform, projectRoot));
-
-  return appMode === 'web' ? webConfig(api, projectOptions, env, projectRoot) : nativeConfig(api, projectOptions, env, projectRoot, platform);
 };
 
 const resolveExtensions = (config, ext) => {
