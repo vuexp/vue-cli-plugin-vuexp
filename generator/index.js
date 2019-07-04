@@ -61,18 +61,16 @@ module.exports = async (api, options, rootOptions) => {
       }
     },
     scripts: {
-      'build:android': 'npm run setup-webpack-config && tns build android --bundle --env.production && npm run remove-webpack-config',
-      'build:ios': 'npm run setup-webpack-config && tns build ios --bundle --env.production && npm run remove-webpack-config',
-      'remove-webpack-config': 'node ./node_modules/vue-cli-plugin-vuexp/lib/scripts/webpack-maintenance post',
-      'serve:android': 'npm run setup-webpack-config && tns run android --bundle --env.development',
-      'serve:ios': 'npm run setup-webpack-config && tns run ios --bundle --env.development',
-      // 'inspect:android': 'npm run setup-webpack-config && vue inspect -- --env.android > out-android.js',
-      // 'inspect:ios': 'npm run setup-webpack-config && vue inspect -- --env.ios > out-ios.js',
-      'debug:android': 'npm run setup-webpack-config && tns debug android --bundle --env.development',
-      'debug:ios': 'npm run setup-webpack-config && tns debug ios --bundle --env.development',
-      'preview:android': 'npm run setup-webpack-config && tns preview --bundle --env.development --env.android',
-      'preview:ios': 'npm run setup-webpack-config && tns preview --bundle --env.development --env.ios',
-      'setup-webpack-config': 'node ./node_modules/vue-cli-plugin-vuexp/lib/scripts/webpack-maintenance pre',
+      'build:android': 'tns build android --bundle --env.production ',
+      'build:ios': 'tns build ios --bundle --env.production',
+      'serve:android': 'tns run android --bundle --env.development',
+      'serve:ios': 'tns run ios --bundle --env.development',
+      // 'inspect:android': 'vue inspect -- --env.android > out-android.js',
+      // 'inspect:ios': 'vue inspect -- --env.ios > out-ios.js',
+      'debug:android': 'tns debug android --bundle --env.development',
+      'debug:ios': 'tns debug ios --bundle --env.development',
+      'preview:android': 'tns preview --bundle --env.development --env.android',
+      'preview:ios': 'tns preview --bundle --env.development --env.ios',
       'clean:platforms': 'rimraf platforms',
       'clean:android': 'rimraf platforms/android',
       'clean:ios': 'rimraf platforms/ios'
@@ -99,7 +97,7 @@ module.exports = async (api, options, rootOptions) => {
     scripts: {
       'serve:web': 'vue-cli-service serve --mode development.web',
       'build:web': 'vue-cli-service build --mode production.web'
-      //'inspect:web': 'npm run setup-webpack-config && vue inspect -- --env.web > out-web.js'
+      //'inspect:web': 'vue inspect -- --env.web > out-web.js'
     }
   });
 
