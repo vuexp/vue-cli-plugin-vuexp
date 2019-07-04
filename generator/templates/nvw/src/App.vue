@@ -1,16 +1,6 @@
 <%_ if (rootOptions.router) { _%>
 <%# -------------------- IS Using vue-router  -------------------- -%>
-<template web>
-  <Page>
-    <ActionBar :title="navbarTitle"/>
-    <GridLayout rows="auto, auto">
-      <Button text="Home" @tap="goToHomePage" row="0"/>
-      <Button text="About" @tap="goToAboutPage" row="1"/>
-    </GridLayout>
-    <router-view/>
-  </Page>
-</template>
-<template native>
+<template>
   <Page>
     <ActionBar :title="navbarTitle"/>
     <GridLayout rows="auto, auto">
@@ -21,17 +11,7 @@
 </template>
 <%_ } else { _%>
 <%# -------------------- IS NOT Using vue-router  -------------------- -%>
-<template web>
-  <Page>
-    <ActionBar :title="navbarTitle"/>
-    <GridLayout rows="auto, auto">
-      <!-- copy-webpack-plugin copies asset from src/assets to project output/build directory /assets -->
-      <Img src="~/assets/logo.png" row="0" class="m-20"/>
-      <HelloWorld :msg="msg" row="1"/>
-    </GridLayout>
-  </Page>
-</template>
-<template native>
+<template>
   <Page>
     <ActionBar :title="navbarTitle"/>
     <GridLayout rows="auto, auto">
@@ -135,7 +115,7 @@
 <%_ if (rootOptions.cssPreprocessor) { _%>
 <%_   if (rootOptions.cssPreprocessor == 'sass' || rootOptions.cssPreprocessor == 'scss'  || rootOptions.cssPreprocessor == 'dart-sass' ) { _%>
 <%#   -------------------- IS Using sass, scss OR dart-sass -------------------- -%>
-<style web lang="scss">
+<style lang="scss">
   @import '~styles/style-one';
 
   .w-page {
@@ -148,12 +128,9 @@
   }
 
 </style>
-<style native lang="scss">
-  @import '~styles/style-one';
-</style>
 <%_   } else if (rootOptions.cssPreprocessor == 'stylus') { _%>
 <%#   -------------------- IS Using stylus -------------------- -%>
-<style web lang="stylus">
+<style lang="stylus">
   @import '~styles/style-one';
 
   .w-page
@@ -164,12 +141,9 @@
     color #42b983
   
 </style>
-<style native lang="stylus">
-  @import '~styles/style-one';
-</style>
 <%_   } else if (rootOptions.cssPreprocessor == 'less') { _%>
 <%#   -------------------- IS Using Less -------------------- -%>
-<style web lang="less">
+<style lang="less">
   @import '~styles/style-one';
 
   .w-page {
@@ -181,14 +155,11 @@
     color: #42b983;
   }
 
-</style>
-<style native lang="less">
-  @import '~styles/style-one';
 </style>
 <%_   } _%>
 <%_ } else { _%>
 <%# -------------------- IS Using standard CSS -------------------- -%>
-<style web>
+<style>
   @import '~styles/style-one';
 
   .w-page {
@@ -199,8 +170,5 @@
   .nvw-action-bar {
     color: #42b983;
   }
-</style>
-<style native>
-  @import '~styles/style-one';
 </style>
 <%_ } _%>

@@ -1,11 +1,4 @@
-<template web>
-  <Page>
-    <GridLayout>
-      <Label text="This is an about page" :textWrap="true" horizontalAlignment="center" verticalAlignment="center"/>
-    </GridLayout>
-  </Page>
-</template>
-<template native>
+<template>
   <Page>
     <ActionBar :title="navbarTitle"/>
     <GridLayout>
