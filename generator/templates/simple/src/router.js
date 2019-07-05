@@ -14,11 +14,11 @@ replace:
 ---
 
 <%# REPLACE %>
-import Vue from 'vue';
+import Vue from './vue';
 <%# END_REPLACE %>
 
 <%# REPLACE %>
-import Router from 'vue-router';
+import Router from 'vuexp-router';
 <%# END_REPLACE %>
 
 <%# REPLACE %>

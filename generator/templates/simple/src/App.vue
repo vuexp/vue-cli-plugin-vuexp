@@ -1,111 +1,28 @@
-<%_ if (rootOptions.router) { _%>
-<%# -------------------- IS Using vue-router  -------------------- -%>
 <template>
-  <Page>
-    <ActionBar :title="navbarTitle"/>
-    <GridLayout rows="auto, auto">
-      <Button text="Home" @tap="goToHomePage" row="0"/>
-      <Button text="About" @tap="goToAboutPage" row="1"/>
-    </GridLayout>
-  </Page>
+  <router-view></router-view>
 </template>
-<%_ } else { _%>
-<%# -------------------- IS NOT Using vue-router  -------------------- -%>
-<template>
-  <Page>
-    <ActionBar :title="navbarTitle"/>
-    <GridLayout rows="auto, auto">
-      <HelloWorld :msg="msg"/>
-    </GridLayout>
-  </Page>
-</template>
-<%_ } _%>
 <%_ if (!usingTS) { _%>
 <%# -------------------- IS NOT Using TypeScript -------------------- -%>
 <script>
-<%_   if (!rootOptions.router) { _%>
-  import HelloWorld from '~/components/HelloWorld';
-<%_   } _%>
-
-<%_   if (!rootOptions.router) { _%>
-  const { VUE_APP_MODE, VUE_APP_PLATFORM } = process.env;
-<%_   } else { _%>
-  const { VUE_APP_MODE } = process.env;
-<%_   } _%>
-
-  export default {
-<%_   if (!rootOptions.router) { _%>
-    components: {
-      HelloWorld,
-    },
-<%_     } _%>
-    data() {
-      return {
-        navbarTitle: `App.vue`,
-<%_   if (!rootOptions.router) { _%>
-        msg: `Mode=${VUE_APP_MODE} and Platform=${VUE_APP_PLATFORM}`,
-<%_   } _%>
-      };
-    },
-    methods: {
-<%_   if (rootOptions.router) { _%>
-      goToHomePage() {
-        this.goTo('home');
-      },
-      goToAboutPage() {
-        this.goTo('about');
-      },
-      goTo(route) {
-        VUE_APP_MODE === 'web' ? this.$router.push(route) : this.$navigator.navigate(route);
-      }
-<%_   } _%>
-    }
-  };
+export default {
+  data() {
+    return {
+      navbarTitle: `App.vue`
+    };
+  }
+};
 </script>
 <%_ } else { _%>
 <%# -------------------- IS Using TypeScript -------------------- -%>
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator';
-<%_ if (!rootOptions.router) { _%>
-  import HelloWorld from '~/components/HelloWorld.vue';
-<%_ } _%>
+import { Component, Vue } from 'vue-property-decorator';
 
-<%_   if (!rootOptions.router) { _%>
-  const { VUE_APP_MODE, VUE_APP_PLATFORM } = process.env;
-<%_   } else { _%>
-  const { VUE_APP_MODE } = process.env;
-<%_   } _%>
-
-  @Component({
-    name: 'home',
-<%_ if (!rootOptions.router) { _%>
-    components: {
-      HelloWorld,
-    },
-<%_ } _%>
-  })
-  export default class App extends Vue {
-    private navbarTitle: string = `App.vue`;
-<%_ if (!rootOptions.router) { _%>
-    private msg: string = `Mode=${VUE_APP_MODE} and Platform=${VUE_APP_PLATFORM}`;
-<%_ } _%>
-
-<%_ if (rootOptions.router) { _%>
-
-    public goToHomePage() {
-      this.goTo('home');
-    }
-
-    public goToAboutPage() {
-      this.goTo('about');
-    }
-
-    public goTo(route) {
-      VUE_APP_MODE === 'web' ? this.$router.push(route) : Vue.prototype.$navigator.navigate(route);
-    }
-<%_ } _%>
-  }
-
+@Component({
+  name: 'home'
+})
+export default class App extends Vue {
+  private navbarTitle: string = `App.vue`;
+}
 </script>
 <%_ } _%>
 
@@ -114,13 +31,7 @@
 <%_   if (rootOptions.cssPreprocessor == 'sass' || rootOptions.cssPreprocessor == 'scss'  || rootOptions.cssPreprocessor == 'dart-sass' ) { _%>
 <%#   -------------------- IS Using sass, scss OR dart-sass -------------------- -%>
 <style lang="scss">
-  @import '~styles/style-one';
-
-  .w-page {
-    height: 100%;
-    width: 100%;
-  }
-
+@import '~styles/style-one';
 </style>
 <%_   } else if (rootOptions.cssPreprocessor == 'stylus') { _%>
 <%#   -------------------- IS Using stylus -------------------- -%>
@@ -130,12 +41,12 @@
 <%_   } else if (rootOptions.cssPreprocessor == 'less') { _%>
 <%#   -------------------- IS Using Less -------------------- -%>
 <style lang="less">
-  @import '~styles/style-one';
+@import '~styles/style-one';
 </style>
 <%_   } _%>
 <%_ } else { _%>
 <%# -------------------- IS Using standard CSS -------------------- -%>
 <style>
-  @import '~styles/style-one';
+@import '~styles/style-one';
 </style>
 <%_ } _%>
