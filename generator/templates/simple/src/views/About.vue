@@ -1,11 +1,4 @@
-<template web>
-  <div class="w-page">
-    <div class="w-container">
-      <span>This is an about page</span>
-    </div>
-  </div>
-</template>
-<template native>
+<template>
   <Page>
     <ActionBar :title="navbarTitle"/>
     <GridLayout>

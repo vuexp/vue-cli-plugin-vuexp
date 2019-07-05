@@ -1,21 +1,6 @@
 <%_ if (rootOptions.router) { _%>
 <%# -------------------- IS Using vue-router  -------------------- -%>
-<template web>
-  <div class="w-page">
-    <nav>
-      <ul class="w-navbar">
-        <li class="w-title" :text="navbarTitle">{{navbarTitle}}</li>
-      </ul>
-    </nav>
-    <div class="w-container">
-      <router-link tag="button" class="w-button" id="homeButton" to="/">Home</router-link>
-      <!-- alternate way to route manually and use the same method as native -->
-      <button class="w-button" id="aboutButton" v-on:click="goToAboutPage">About</button>
-      <router-view/>
-    </div>
-  </div>
-</template>
-<template native>
+<template>
   <Page>
     <ActionBar :title="navbarTitle"/>
     <GridLayout rows="auto, auto">
@@ -26,15 +11,7 @@
 </template>
 <%_ } else { _%>
 <%# -------------------- IS NOT Using vue-router  -------------------- -%>
-<template web>
-  <div class="w-page">
-    <div class="w-container">
-      <img src="~/assets/logo.png" alt="logo" height="20%" width="20%">
-      <HelloWorld :msg="msg"/>
-    </div>
-  </div>
-</template>
-<template native>
+<template>
   <Page>
     <ActionBar :title="navbarTitle"/>
     <GridLayout rows="auto, auto">
@@ -136,16 +113,7 @@
 <%_ if (rootOptions.cssPreprocessor) { _%>
 <%_   if (rootOptions.cssPreprocessor == 'sass' || rootOptions.cssPreprocessor == 'scss'  || rootOptions.cssPreprocessor == 'dart-sass' ) { _%>
 <%#   -------------------- IS Using sass, scss OR dart-sass -------------------- -%>
-<style web lang="scss">
-  @import '~styles/style-one';
-
-  .w-page {
-    height: 100%;
-    width: 100%;
-  }
-
-</style>
-<style native lang="scss">
+<style lang="scss">
   @import '~styles/style-one';
 
   .w-page {
@@ -156,43 +124,18 @@
 </style>
 <%_   } else if (rootOptions.cssPreprocessor == 'stylus') { _%>
 <%#   -------------------- IS Using stylus -------------------- -%>
-<style web lang="stylus">
-  @import '~styles/style-one';
-
-  .w-page
-    height 100%
-    width 100%
-
-</style>
-<style native lang="stylus">
+<style lang="stylus">
   @import '~styles/style-one';
 </style>
 <%_   } else if (rootOptions.cssPreprocessor == 'less') { _%>
 <%#   -------------------- IS Using Less -------------------- -%>
-<style web lang="less">
-  @import '~styles/style-one';
-
-  .w-page {
-    height: 100%;
-    width: 100%;
-  }
-
-</style>
-<style native lang="less">
+<style lang="less">
   @import '~styles/style-one';
 </style>
 <%_   } _%>
 <%_ } else { _%>
 <%# -------------------- IS Using standard CSS -------------------- -%>
-<style web>
-  @import '~styles/style-one';
-
-  .w-page {
-    height: 100%;
-    width: 100%;
-  }
-</style>
-<style native>
+<style>
   @import '~styles/style-one';
 </style>
 <%_ } _%>

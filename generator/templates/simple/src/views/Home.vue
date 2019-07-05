@@ -1,12 +1,4 @@
-<template web>
-  <div class="w-page">
-    <div class="w-container">
-      <img src="~/assets/logo.png" alt="logo">
-      <HelloWorld :msg="msg"/>
-    </div>
-  </div>
-</template>
-<template native>
+<template>
   <Page>
     <ActionBar :title="navbarTitle"/>
     <GridLayout rows="auto, auto">

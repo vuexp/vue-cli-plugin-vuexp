@@ -365,37 +365,6 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
           {}
         )
       )
-      .before('string-replace-loader')
-      .end()
-      .use('string-replace-loader')
-      .loader('string-replace-loader')
-      .options(
-        Object.assign(
-          {
-            multiple: [
-              {
-                search: getBlockRegex('template', 'web'),
-                replace: '',
-                flags: 'gim',
-                strict: false
-              },
-              {
-                search: getBlockRegex('script', 'web'),
-                replace: '',
-                flags: 'gim',
-                strict: false
-              },
-              {
-                search: getBlockRegex('style', 'web'),
-                replace: '',
-                flags: 'gim',
-                strict: false
-              }
-            ]
-          },
-          {}
-        )
-      )
       .end();
 
     // delete the js loader rule and rebuil it
@@ -1015,36 +984,6 @@ const webConfig = (api, projectOptions, env, projectRoot) => {
             .rule('vue')
             .uses.get('vue-loader')
             .get('options')
-        )
-      )
-      .end()
-      .use('string-replace-loader')
-      .loader('string-replace-loader')
-      .options(
-        Object.assign(
-          {
-            multiple: [
-              {
-                search: getBlockRegex('template', 'native'),
-                replace: '',
-                flags: 'gim',
-                strict: false
-              },
-              {
-                search: getBlockRegex('script', 'native'),
-                replace: '',
-                flags: 'gim',
-                strict: false
-              },
-              {
-                search: getBlockRegex('style', 'native'),
-                replace: '',
-                flags: 'gim',
-                strict: false
-              }
-            ]
-          },
-          {}
         )
       )
       .end();
