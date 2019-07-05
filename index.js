@@ -3,7 +3,6 @@
 const { relative, resolve, sep, join } = require('path');
 const fs = require('fs-extra');
 
-const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
@@ -79,10 +78,6 @@ const resolveExtensionsOptions = {
   ]
 };
 
-const getBlockRegex = (tag, mode) => {
-  return `^((<${tag})(.+\\b${mode}\\b))([\\s\\S]*?>)[\\s\\S]*?(<\\/${tag}>)`;
-};
-
 module.exports = (api, projectOptions) => {
   let env = new Object();
   let flags = new Array();
@@ -118,17 +113,15 @@ module.exports = (api, projectOptions) => {
   const platform = env && ((env.android && 'android') || (env.ios && 'ios') || (env.web && 'web'));
   // console.log('platform - ', platform);
 
-  if (!platform) {
-    throw new Error('You need to provide a target platform!');
+  if (platform) {
+    const projectRoot = api.service.context;
+    const appMode = platform === 'android' ? 'native' : platform === 'ios' ? 'native' : 'web';
+
+    // setup output directory depending on if we're building for web or native
+    projectOptions.outputDir = join(projectRoot, appMode === 'web' ? 'dist' : nsWebpack.getAppPath(platform, projectRoot));
+
+    return appMode === 'web' ? webConfig(api, projectOptions, env, projectRoot) : nativeConfig(api, projectOptions, env, projectRoot, platform);
   }
-
-  const projectRoot = api.service.context;
-  const appMode = platform === 'android' ? 'native' : platform === 'ios' ? 'native' : 'web';
-
-  // setup output directory depending on if we're building for web or native
-  projectOptions.outputDir = join(projectRoot, appMode === 'web' ? 'dist' : nsWebpack.getAppPath(platform, projectRoot));
-
-  return appMode === 'web' ? webConfig(api, projectOptions, env, projectRoot) : nativeConfig(api, projectOptions, env, projectRoot, platform);
 };
 
 const resolveExtensions = (config, ext) => {
