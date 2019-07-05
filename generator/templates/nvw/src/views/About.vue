@@ -2,7 +2,7 @@
   <Page>
     <ActionBar :title="navbarTitle"/>
     <GridLayout>
-      <Label text="This is an about page" :textWrap="true" horizontalAlignment="center" verticalAlignment="center"/>
+      <Label class="info-label" text="This is an about page" :textWrap="true" horizontalAlignment="center" verticalAlignment="center"/>
     </GridLayout>
   </Page>
 </template>
@@ -40,7 +40,7 @@
   @import '~styles/style-two';
   @import '~styles/style-one';
 
-  .nvw-label {
+  .info-label {
     height: 100%;
     width: 100%;
     padding-top: 3em;
@@ -58,7 +58,7 @@
   @import '~styles/style-two';
   @import '~styles/style-one';
 
-  .nvw-label
+  .info-label
     height 100%
     width 100%
     padding-top 3em
@@ -76,7 +76,7 @@
   @import '~styles/style-two';
   @import '~styles/style-one';
 
-  .nvw-label {
+  .info-label {
     height: 100%;
     width: 100%;
     padding-top: 3em;
@@ -95,7 +95,7 @@
   @import '~styles/style-two';
   @import '~styles/style-one';
 
-  .nvw-label {
+  .info-label {
     height: 100%;
     width: 100%;
     padding-top: 3em;

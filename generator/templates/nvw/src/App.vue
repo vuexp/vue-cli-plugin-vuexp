@@ -16,7 +16,7 @@
     <ActionBar :title="navbarTitle"/>
     <GridLayout rows="auto, auto">
       <!-- copy-webpack-plugin copies asset from src/assets to project output/build directory /assets -->
-      <Image src="~/assets/logo.png" row="0" class="m-20"/>
+      <VxpImage src="~/assets/logo.png" row="0" class="m-20"/>
       <HelloWorld :msg="msg" row="1"/>
     </GridLayout>
   </Page>
