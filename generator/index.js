@@ -63,7 +63,7 @@ module.exports = async (api, options, rootOptions) => {
     scripts: {
       'build:android': 'npm run setup-webpack-config && tns build android --bundle --env.production && npm run remove-webpack-config',
       'build:ios': 'npm run setup-webpack-config && tns build ios --bundle --env.production && npm run remove-webpack-config',
-      'remove-webpack-config': 'node ./node_modules/vue-cli-plugin-nativescript-vue/lib/scripts/webpack-maintenance post',
+      'remove-webpack-config': 'node ./node_modules/vue-cli-plugin-vuexp/lib/scripts/webpack-maintenance post',
       'serve:android': 'npm run setup-webpack-config && tns run android --bundle --env.development',
       'serve:ios': 'npm run setup-webpack-config && tns run ios --bundle --env.development',
       // 'inspect:android': 'npm run setup-webpack-config && vue inspect -- --env.android > out-android.js',
@@ -72,7 +72,7 @@ module.exports = async (api, options, rootOptions) => {
       'debug:ios': 'npm run setup-webpack-config && tns debug ios --bundle --env.development',
       'preview:android': 'npm run setup-webpack-config && tns preview --bundle --env.development --env.android',
       'preview:ios': 'npm run setup-webpack-config && tns preview --bundle --env.development --env.ios',
-      'setup-webpack-config': 'node ./node_modules/vue-cli-plugin-nativescript-vue/lib/scripts/webpack-maintenance pre',
+      'setup-webpack-config': 'node ./node_modules/vue-cli-plugin-vuexp/lib/scripts/webpack-maintenance pre',
       'clean:platforms': 'rimraf platforms',
       'clean:android': 'rimraf platforms/android',
       'clean:ios': 'rimraf platforms/ios'
@@ -80,7 +80,10 @@ module.exports = async (api, options, rootOptions) => {
     dependencies: {
       'nativescript-vue': '^2.2.2',
       vuexp: '^0.3.0',
-      'tns-core-modules': '^5.4.1'
+      'tns-core-modules': '^5.4.1',
+      'nativescript-background-http': '^3.4.0',
+      'nativescript-imagepicker': 'git://github.com/mylmz10/nativescript-mediapicker.git',
+      'nativescript-mediafilepicker': '2.0.15'
     },
     devDependencies: {
       'nativescript-dev-webpack': '^0.24.0',
@@ -173,7 +176,7 @@ module.exports = async (api, options, rootOptions) => {
   });
 
   console.log('doing template rendering');
-
+  
   // render App_Resources folder
   api.render(async () => {
     // eslint-disable-next-line prettier/prettier

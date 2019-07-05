@@ -1,13 +1,4 @@
-<template web>
-  <Page>
-    <GridLayout rows="auto, auto">
-      <!-- copy-webpack-plugin copies asset from src/assets to project output/build directory /assets -->
-      <Img src="~/assets/logo.png" row="0" class="m-20"/>
-      <HelloWorld :msg="msg" row="1"/>
-    </GridLayout>
-  </Page>
-</template>
-<template native>
+<template>
   <Page>
     <ActionBar :title="navbarTitle"/>
     <GridLayout rows="auto, auto">

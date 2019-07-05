@@ -10,6 +10,7 @@ replace:
 
 <%# REPLACE %>
 import Vue from 'vue';
+import registerComponents from './componentRegisterer';
 <%# END_REPLACE %>
 
 <%# REPLACE %>
@@ -18,6 +19,7 @@ import App from '~/App.vue';
 
 <%# REPLACE %>
 Vue.config.productionTip = false;
+registerComponents(Vue);
 <%# END_REPLACE %>
 
 <%# REPLACE %>
