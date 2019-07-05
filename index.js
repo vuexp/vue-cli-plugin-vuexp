@@ -3,7 +3,6 @@
 const { relative, resolve, sep, join } = require('path');
 const fs = require('fs-extra');
 
-const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
@@ -77,10 +76,6 @@ const resolveExtensionsOptions = {
     '.ios.css',
     '.css'
   ]
-};
-
-const getBlockRegex = (tag, mode) => {
-  return `^((<${tag})(.+\\b${mode}\\b))([\\s\\S]*?>)[\\s\\S]*?(<\\/${tag}>)`;
 };
 
 module.exports = (api, projectOptions) => {
