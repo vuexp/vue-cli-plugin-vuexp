@@ -1,15 +1,15 @@
+import Page from "vuexp/src/core/components/Page/Page";
 import GridLayout from "vuexp/src/layouts/GridLayout";
 import ActionBar from "vuexp/src/core/components/ActionBar/ActionBar";
 import VxpImage from "vuexp/src/components/VxpImage";
-import Label from "vuexp/src/core/components/Label/Label";
-import Button from "vuexp/src/core/components/Button/Button";
-import Page from "vuexp/src/core/components/Page/Page";
+import VxpLabel from "vuexp/src/components/VxpLabel";
+import VxpButton from "vuexp/src/components/VxpButton";
 
 export default function registerComponents(Vue) {
   Vue.component("GridLayout", GridLayout);
   Vue.component("ActionBar", ActionBar);
-  Vue.component("Button", Button);
+  Vue.component("VxpButton", VxpButton);
   Vue.component("VxpImage", VxpImage);
-  Vue.component("Label", Label);
+  Vue.component("VxpLabel", VxpLabel);
   Vue.component("Page", Page);
 }

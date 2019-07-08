@@ -1,25 +1,10 @@
 import Vue from 'nativescript-vue';
 import registerComponents from './componentRegisterer';
-
-<%_ if (rootOptions.router) { _%>
-import Navigator from 'nativescript-vue-navigator'
-<%_ } _%>
+import router from './router';
 
 import App from './App.vue';
-<%_ if (rootOptions.router) { _%>
-import { options } from './router';
 
-// adapt vue-router routes to nativescript-vue-navigator
-const routes = options.routes.reduce((data, route) => {
-  data[route.name] = {
-    component: route.component
-  }
-  return data
-}, {});
-
-Vue.use(Navigator, { routes });
 registerComponents(Vue);
-<%_ } _%>
 
 // Set the following to `true` to hide the logs created by nativescript-vue
 Vue.config.silent = false;
@@ -28,5 +13,8 @@ Vue.config.silent = false;
 // Vue.config.debug = true;
 
 new Vue({
-  render: h => h('frame', [h(App)]),
+  router,
+  // TODO removed until fix vuexp-router frame bug
+  //render: h => h('frame', [h(App)]),
+  render: h => h(App)
 }).$start();

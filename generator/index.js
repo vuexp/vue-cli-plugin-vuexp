@@ -80,6 +80,7 @@ module.exports = async (api, options, rootOptions) => {
     dependencies: {
       'nativescript-vue': '^2.2.2',
       vuexp: '^0.3.0',
+      'vuexp-router': 'git://github.com/vuexp/vuexp-router.git#development',
       'tns-core-modules': '^5.4.1',
       'nativescript-background-http': '^3.4.0',
       'nativescript-imagepicker': 'git://github.com/mylmz10/nativescript-mediapicker.git',
@@ -107,11 +108,6 @@ module.exports = async (api, options, rootOptions) => {
   });
 
   if (rootOptions.router) {
-    api.extendPackage({
-      dependencies: {
-        'nativescript-vue-navigator': '^0.0.3'
-      }
-    });
   }
 
   if (api.hasPlugin('typescript')) {
@@ -176,7 +172,7 @@ module.exports = async (api, options, rootOptions) => {
   });
 
   console.log('doing template rendering');
-  
+
   // render App_Resources folder
   api.render(async () => {
     // eslint-disable-next-line prettier/prettier
