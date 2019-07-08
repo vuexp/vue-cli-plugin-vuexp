@@ -2,7 +2,7 @@
   <GridLayout rows="auto, auto">
     <VxpLabel class="message" :text="msg" row="0" horizontalAlignment="center"/>
     <!-- copy-webpack-plugin copies asset from src/assets to project output/build directory /assets -->
-    <VxpImage src="~/components/icon.png" row="1" class="m-40"/>
+    <VxpImage src="~/components/icon.png" row="1" class="m-40" width="50"/>
   </GridLayout>
 </template>
 <%_ if (!usingTS) { _%>
@@ -39,8 +39,6 @@ export default class HelloWorld extends Vue {
 }
 
 image {
-  height: 20%;
-  width: 20%;
   margin-top: 20px;
 }
 </style>
@@ -51,8 +49,6 @@ image {
     color #42b983
 
   Image
-    height 20%
-    width 20%
     margin-top 20px
 </style>
 <%_   } else if (rootOptions.cssPreprocessor == 'less') { _%>
@@ -63,8 +59,6 @@ image {
 }
 
 image {
-  height: 20%;
-  width: 20%;
   margin-top: 20px;
 }
 </style>
@@ -77,8 +71,6 @@ image {
 }
 
 image {
-  height: 20%;
-  width: 20%;
   margin-top: 20px;
 }
 </style>

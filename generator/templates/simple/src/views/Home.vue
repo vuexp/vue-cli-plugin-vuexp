@@ -5,7 +5,7 @@
       <!-- copy-webpack-plugin copies asset from src/assets to project output/build directory /assets -->
       <VxpButton text="About" @tap="goToAboutPage" row="0"/>
 
-      <VxpImage src="~/assets/logo.png" row="1" class="m-20"/>
+      <VxpImage src="~/assets/logo.png" row="1" class="logo"/>
       <HelloWorld :msg="msg" row="2"/>
     </GridLayout>
   </Page>
@@ -67,11 +67,8 @@ export default class Home extends Vue {
 @import '~styles/style-one';
 @import '~styles/style-two';
 
-img,
-image {
-  height: 20%;
-  width: 20%;
-  display: block;
+.logo {
+  width: 30%;
   margin: auto;
   margin-top: 4em;
 }
@@ -82,10 +79,8 @@ image {
   @import '~styles/style-one';
   @import '~styles/style-two';
 
-  img, Image
-    height 20%
-    width 20%
-    display block
+  .logo
+    width 30%
     margin auto
     margin-top 4em
 </style>
@@ -95,11 +90,8 @@ image {
 @import '~styles/style-one';
 @import '~styles/style-two';
 
-img,
-image {
-  height: 20%;
-  width: 20%;
-  display: block;
+.logo {
+  width: 30%;
   margin: auto;
   margin-top: 4em;
 }
@@ -111,11 +103,8 @@ image {
 @import '~styles/style-one';
 @import '~styles/style-two';
 
-img,
-image {
-  height: 20%;
-  width: 20%;
-  display: block;
+.logo {
+  width: 30%;
   margin: auto;
   margin-top: 4em;
 }
