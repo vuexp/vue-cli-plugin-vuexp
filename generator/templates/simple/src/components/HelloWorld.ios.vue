@@ -2,7 +2,7 @@
   <GridLayout rows="auto, auto">
     <VxpLabel class="message" :text="msg" row="0" horizontalAlignment="center"/>
     <!-- copy-webpack-plugin copies asset from src/assets to project output/build directory /assets -->
-    <VxpImage src="~/components/icon.png" row="1" class="m-40" width="50"/>
+    <VxpImage src="~/components/icon.png" row="1" class="m-40" width="50" stretch="aspectFit"/>
   </GridLayout>
 </template>
 <%_ if (!usingTS) { _%>

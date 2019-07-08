@@ -5,7 +5,7 @@
       <!-- copy-webpack-plugin copies asset from src/assets to project output/build directory /assets -->
       <VxpButton text="About" @tap="goToAboutPage" row="0"/>
 
-      <VxpImage src="~/assets/logo.png" row="1" class="logo"/>
+      <VxpImage src="~/assets/logo.png" row="1" class="logo" stretch="aspectFit"/>
       <HelloWorld :msg="msg" row="2"/>
     </GridLayout>
   </Page>
