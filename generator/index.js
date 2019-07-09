@@ -43,9 +43,9 @@ module.exports = async (api, options, rootOptions) => {
     applicationLicense: api.generator.pkg.license || 'MIT',
     applicationId: options.applicationId,
     historyMode: options.historyMode,
-    doesCompile: api.hasPlugin('babel') || api.hasPlugin('typescript') ? true : false,
-    usingBabel: api.hasPlugin('babel') ? true : false,
-    usingTS: api.hasPlugin('typescript') ? true : false
+    doesCompile: api.hasPlugin('babel') || api.hasPlugin('typescript'),
+    usingBabel: api.hasPlugin('babel'),
+    usingTS: api.hasPlugin('typescript')
   };
 
   console.log('adding to package.json');
@@ -168,7 +168,8 @@ module.exports = async (api, options, rootOptions) => {
       delete pkg.devDependencies['babel-core'];
     }
     // we will be replacing these
-    delete pkg.scripts['serve'], delete pkg.scripts['build'];
+    delete pkg.scripts['serve'];
+    delete pkg.scripts['build'];
   });
 
   console.log('doing template rendering');
@@ -511,85 +512,6 @@ const nsconfigSetup = (module.exports.nsconfigSetup = async (dirPathPrefix, nsco
   }
 });
 
-// can be used to strip out template tags in native only project
-// currently unused in preference for EJS templating
-// eslint-disable-next-line no-unused-vars
-const stripTemplateTags = (module.exports.stripTemplateTags = async (srcPathPrefix) => {
-  try {
-    const files = await getAllFilesInDirStructure(srcPathPrefix, '');
-
-    for (const file of files) {
-      if (file.slice(-4) == '.vue') {
-        const options = {
-          files: path.join(srcPathPrefix, file),
-          from: [
-            new RegExp(`^((<template)(.+\\bweb\\b))([\\s\\S]*?>)[\\s\\S]*?(<\\/template>)`, `gim`),
-            new RegExp(`^((<template)(.+\\bnative\\b))([\\s\\S]*?>)`, `gim`)
-          ],
-          to: ['', '<template>']
-        };
-
-        await replaceInFile(options);
-      }
-    }
-  } catch (err) {
-    throw err;
-  }
-});
-
-const nativeOnlyRenameFiles = (module.exports.nativeOnlyRenameFiles = async (srcPathPrefix) => {
-  try {
-    const _files = await getAllFilesInDirStructure(srcPathPrefix, '');
-    const files = new Array();
-    const match = '.native.vue';
-
-    for (const file of _files) {
-      if (file.slice(-11) == match) {
-        files.push(path.join(srcPathPrefix, file));
-      }
-    }
-
-    for (const file of files) {
-      const oldFile = file.replace(match, '.vue');
-      fs.moveSync(file, oldFile, { overwrite: true });
-    }
-  } catch (err) {
-    throw err;
-  }
-});
-
-// setup tslintSetup
-const nativeOnlyPackageJsonSetup = (module.exports.nativeOnlyPackageJsonSetup = async (filePath) => {
-  let fileContents = '';
-
-  try {
-    if (fs.existsSync(filePath)) {
-      fileContents = JSON.parse(
-        fs.readFileSync(filePath, {
-          encoding: 'utf8'
-        })
-      );
-    } else {
-      return;
-    }
-
-    fileContents.main = 'main';
-
-    fs.writeFileSync(
-      filePath,
-      JSON.stringify(fileContents, null, 2),
-      {
-        encoding: 'utf8'
-      },
-      (err) => {
-        if (err) console.error(err);
-      }
-    );
-  } catch (err) {
-    throw err;
-  }
-});
-
 // setup tslintSetup
 const tslintSetup = (module.exports.tslintSetup = async (dirPathPrefix, tslintPath, tsExclusionArray) => {
   let tslintContent = '';
@@ -750,33 +672,33 @@ const renderDirectoryStructure = (module.exports.renderDirectoryStructure = asyn
       // only import styles based on the type of preprocessor you do or do not have.
       // Essentially acts as filter as you iterate through the list of files in a directory structure
       if (
-        rawPath.slice(-4) == '.css' ||
-        rawPath.slice(-5) == '.scss' ||
-        rawPath.slice(-5) == '.sass' ||
-        rawPath.slice(-5) == '.less' ||
-        rawPath.slice(-5) == '.styl' ||
-        rawPath.slice(-7) == '.stylus'
+        rawPath.slice(-4) === '.css' ||
+        rawPath.slice(-5) === '.scss' ||
+        rawPath.slice(-5) === '.sass' ||
+        rawPath.slice(-5) === '.less' ||
+        rawPath.slice(-5) === '.styl' ||
+        rawPath.slice(-7) === '.stylus'
       ) {
         if (rootOptions.cssPreprocessor) {
           switch (rootOptions.cssPreprocessor) {
             case 'scss':
-              if (rawPath.slice(-5) == '.scss' || rawPath.slice(-5) == '.sass') files.push(rawPath);
+              if (rawPath.slice(-5) === '.scss' || rawPath.slice(-5) === '.sass') files.push(rawPath);
               break;
             case 'sass':
-              if (rawPath.slice(-5) == '.scss' || rawPath.slice(-5) == '.sass') files.push(rawPath);
+              if (rawPath.slice(-5) === '.scss' || rawPath.slice(-5) === '.sass') files.push(rawPath);
               break;
             case 'dart-sass':
-              if (rawPath.slice(-5) == '.scss' || rawPath.slice(-5) == '.sass') files.push(rawPath);
+              if (rawPath.slice(-5) === '.scss' || rawPath.slice(-5) === '.sass') files.push(rawPath);
               break;
             case 'less':
-              if (rawPath.slice(-5) == '.less') files.push(rawPath);
+              if (rawPath.slice(-5) === '.less') files.push(rawPath);
               break;
             case 'stylus':
-              if (rawPath.slice(-5) == '.styl' || rawPath.slice(-7) == '.stylus') files.push(rawPath);
+              if (rawPath.slice(-5) === '.styl' || rawPath.slice(-7) === '.stylus') files.push(rawPath);
               break;
           }
         } else {
-          if (rawPath.slice(-4) == '.css') files.push(rawPath);
+          if (rawPath.slice(-4) === '.css') files.push(rawPath);
         }
       } else {
         files.push(rawPath);
@@ -846,11 +768,4 @@ const replaceInFile = (module.exports.replaceInFile = async (options) => {
   } catch (error) {
     console.error('Error occurred:', error);
   }
-});
-
-// utility function used to remove items from an array that match 'item'
-const removeFromArray = (module.exports.removeFromArray = async (array, item) => {
-  const index = array.indexOf(item);
-  if (index !== -1) array.splice(index, 1);
-  return array;
 });
