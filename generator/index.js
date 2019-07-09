@@ -271,6 +271,10 @@ module.exports = async (api, options, rootOptions) => {
     } else {
       // nothing to do here
     }
+
+    if (api.hasPlugin('eslint')) {
+      require('../lib/lint')({ silent: true }, api);
+    }
   });
 };
 
