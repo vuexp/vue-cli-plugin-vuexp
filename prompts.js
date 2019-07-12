@@ -37,14 +37,14 @@ Example: com.company.app`;
     message: 'What type of template do you want to start with? (Default: Simple)',
     choices: [
       {
-        name: 'Advanced',
-        value: 'advanced', 
-      },
-      {
         name: 'Simple',
         value: 'simple'
+      },
+      {
+        name: 'Advanced',
+        value: 'advanced',
       }
     ],
-    default: 'advanced'
+    default: 'simple'
   }
 ];

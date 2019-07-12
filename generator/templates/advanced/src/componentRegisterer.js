@@ -5,7 +5,6 @@ import StackLayout from "vuexp/src/layouts/StackLayout";
 import ActionBar from "vuexp/src/core/components/ActionBar/ActionBar";
 import ActionItem from "vuexp/src/core/components/ActionItem/ActionItem";
 import NavigationButton from "vuexp/src/core/components/NavigationButton/NavigationButton";
-import Img from "vuexp/src/core/components/Img/Img";
 import VxpImage from "vuexp/src/components/VxpImage";
 import VxpLabel from "vuexp/src/components/VxpLabel";
 import VxpButton from "vuexp/src/components/VxpButton";
@@ -28,7 +27,6 @@ export default function registerComponents(Vue) {
   Vue.component("VxpButton", VxpButton);
   Vue.component("VxpLink", VxpLink);
   Vue.component("VxpImage", VxpImage);
-  Vue.component("Img", Img);
   Vue.component("VxpLabel", VxpLabel);
   Vue.component("VxpTextField", VxpTextField);
   Vue.component("VxpCheckbox", VxpCheckbox);
