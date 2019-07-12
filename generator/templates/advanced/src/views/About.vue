@@ -1,8 +1,9 @@
 <template>
   <Page>
     <ActionBar :title="navbarTitle"/>
-    <GridLayout rows="auto">
+    <GridLayout rows="auto, auto">
       <VxpLabel text="This is an about page" :textWrap="true" horizontalAlignment="center" verticalAlignment="center" row="0" />
+      <VxpButton text="Go Home" @tap="goToHomePage" row="0" />
     </GridLayout>
   </Page>
 </template>
@@ -13,6 +14,11 @@ export default {
     return {
       navbarTitle: `About.vue`
     };
+  },
+  methods: {
+    goToHomePage(){
+      this.$router.push("/");
+    }
   }
 };
 </script>
@@ -25,6 +31,10 @@ import { Component, Vue } from 'vue-property-decorator';
 })
 export default class About extends Vue {
   private navbarTitle: string = `About.vue`;
+
+  public goToHomePage() {
+    this.$router.push('/');
+  }
 }
 </script>
 <%_ } _%>

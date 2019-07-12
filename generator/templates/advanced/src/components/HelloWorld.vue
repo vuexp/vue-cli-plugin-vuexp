@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="message">{{msg}}</div>
-    <img src="~/components/icon.png" alt="logo">
+    <img src="~/assets/icon.png" alt="logo">
   </div>
 </template>
 <%_ if (!usingTS) { _%>

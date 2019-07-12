@@ -6,6 +6,8 @@ import App from './App.vue';
 
 registerComponents(Vue);
 
+import "./styles/advanced.scss";
+
 // Set the following to `true` to hide the logs created by nativescript-vue
 Vue.config.silent = false;
 // Set the following to `false` to not colorize the logs created by nativescript-vue

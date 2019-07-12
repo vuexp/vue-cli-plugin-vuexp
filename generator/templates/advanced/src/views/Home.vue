@@ -1,40 +1,13 @@
 <template>
   <Page>
-    <!-- <ActionBar :title="navbarTitle" /> -->
-
-    <VxpSideDrawer ref="drawer" class="sidedrawer-doc-container">
-      <FlexboxLayout
-        flexDirection="column"
-        slot="drawerContent"
-        class="sidedrawer-doc-container__drawer"
-      >
-        <FlexboxLayout class="sidedrawer-doc-container__drawer__title">
-          <VxpLabel text="Navigation Menu"></VxpLabel>
-        </FlexboxLayout>
-        <StackLayout>
-          <VxpLabel text="Home" class="sidedrawer-doc-container__drawer__VxpLabel"></VxpLabel>
-          <VxpLabel text="Social" class="sidedrawer-doc-container__drawer__VxpLabel"></VxpLabel>
-          <VxpLabel text="Promotions" class="sidedrawer-doc-container__drawer__VxpLabel"></VxpLabel>
-          <VxpLabel text="Starred" class="sidedrawer-doc-container__drawer__VxpLabel"></VxpLabel>
-          <VxpLabel text="Drafts" class="sidedrawer-doc-container__drawer__VxpLabel"></VxpLabel>
-        </StackLayout>
-        <VxpButton @tap="closeDrawer" primary text="CLOSE DRAWER"></VxpButton>
-      </FlexboxLayout>
-      <StackLayout slot="mainContent">
-        <VxpLabel :textWrap="true" class="sidedrawer-doc-container__text" text="Main Content Area" />
-        <VxpButton @tap="showDrawer" primary text="SHOW DRAWER"></VxpButton>
-      </StackLayout>
-    </VxpSideDrawer>
-
-    <GridLayout rows="auto, auto, auto, auto">
-      <!-- copy-webpack-plugin copies asset from src/assets to project output/build directory /assets -->
+    <CustomActionBar @itemTap="showDrawerPanel" />
+    <SideLayout ref="sideLayout">
       <VxpButton text="About2" @tap="goToAboutPage" row="0" />
 
-      <VxpImage src="~/assets/logo.png" row="1" class="logo" stretch="aspectFit" />
-      <VxpButton text="Toggle Drawer" row="2" @tap="showDrawer" />
+      <VxpImage src="~/assets/logo.png" row="1" class="logo" />
 
       <HelloWorld :msg="msg" row="2" />
-    </GridLayout>
+    </SideLayout>
   </Page>
 </template>
 <%_ if (!usingTS) { _%>
@@ -59,11 +32,8 @@ export default {
     goToAboutPage() {
       this.$router.push('/about');
     },
-    showDrawer(){
-      this.$refs.drawer.showDrawer();
-    },
-    closeDrawer(){
-      this.$refs.drawer.closeDrawer();
+    showDrawerPanel(){
+      this.$refs.sideLayout.showDrawerPanel();
     },
   }
 };

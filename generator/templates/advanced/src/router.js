@@ -7,7 +7,7 @@ replace:
   - !!js/regexp /export default new Router\(\{/
   - !!js/regexp /import Home from '\./views/Home.vue'/
   - !!js/regexp /\(\) => import(.*)\.\/views\/About\.vue'\)/
-  - !!js/regexp /(\s+)\/\/ (.*)/
+  - !!js/regexp /(\{[^{}]+)(component:\s?Home)([^{}]+\})/
   - !!js/regexp /(\s+)\/\/ (.*)/
   - !!js/regexp /(\s+)\/\/ (.*)/
   - !!js/regexp /\}\)/
@@ -32,6 +32,13 @@ export const options = {
 <%# REPLACE %>
 import Home from '~/views/Home.vue';
 import About from '~/views/About.vue';
+import DemoVxpLabel from "~/views/DemoVxpLabel";
+import DemoVxpButton from "~/views/DemoVxpButton";
+import DemoVxpLink from "~/views/DemoVxpLink";
+import DemoVxpCheckbox from "~/views/DemoVxpCheckbox";
+import DemoVxpDropDown from "~/views/DemoVxpDropDown";
+import DemoVxpImage from "~/views/DemoVxpImage";
+import DemoVxpTextField from "~/views/DemoVxpTextField";
 <%# END_REPLACE %>
 
 <%# REPLACE %>
@@ -39,6 +46,46 @@ About,
 <%# END_REPLACE %>
 
 <%# REPLACE %>
+{
+      path: "/",
+      name: "home",
+      component: Home
+    },
+    {
+      path: "/vxpbutton",
+      name: "vxpbutton",
+      component: DemoVxpButton
+    },
+    {
+      path: "/vxplink",
+      name: "vxplink",
+      component: DemoVxpLink
+    },
+    {
+      path: "/vxpcheckbox",
+      name: "vxpcheckbox",
+      component: DemoVxpCheckbox
+    },
+    {
+      path: "/vxpdropdown",
+      name: "vxpdropdown",
+      component: DemoVxpDropDown
+    },
+    {
+      path: "/vxpimage",
+      name: "vxpimage",
+      component: DemoVxpImage
+    },
+    {
+      path: "/vxplabel",
+      name: "vxplabel",
+      component: DemoVxpLabel
+    },
+    {
+      path: "/vxptextfield",
+      name: "vxptextfield",
+      component: DemoVxpTextField
+    }
 <%# END_REPLACE %>
 
 <%# REPLACE %>
