@@ -4,56 +4,10 @@ Vuexp Plugin for [vue-cli@3.0](https://github.com/vuejs/vue-cli)
 
 This plugin will integrate [Vuexp](https://vuexp.com/) into new and existing Vue projects. Additionally, it will allow for Native __and__ Web environments under a single project structure.  In addition, will allow for the development of Web components with a NativeScript-Vue like syntax that has the benefit of allowing for the sharing of components between the Native and Web sides of the project.  This helps reduce the amount of code, maintenance needs, and the amount of time needed for development activities.
 
-## Sharing logic in a single Web and Native capable component
-The key feature of this plugin is that it will allow you to compose SFC's that contain both Web and Native structures in them. If your component has exactly the same logic (`<script>` block) but you want different templates for web and native, you can use the special `<template web>` and `<template native>`. Also, if you need define different styles you can use `<style web>` and `<style native>`.
+> This plugin is developed based on [nativescript-vue-cli-plugin](https://github.com/nativescript-vue/vue-cli-plugin-nativescript-vue). 
 
-An example of this would be the following Vue component:
-
-```html
-<template web>
-  <div class="w-page">
-    <div class="w-container">
-      <img src="~/assets/logo.png" alt="logo" height="20%" width="20%">
-      <HelloWorld :msg="msg"/>
-    </div>
-  </div>
-</template>
-<template native>
-  <Page>
-    <ActionBar :title="navbarTitle"/>
-    <GridLayout rows="auto, auto">
-      <HelloWorld :msg="msg"/>
-    </GridLayout>
-  </Page>
-</template>
-<script>
-  import HelloWorld from '~/components/HelloWorld';
-  export default {
-    components: {
-      HelloWorld,
-    },
-    data() {
-      return {
-        navbarTitle: `App.${appMode}.vue`,
-        msg: `Mode=${appMode} and Platform=${process.env.VUE_APP_PLATFORM}`,
-      };
-    },
-  }
-</script>
-<style web>
- w-page {
-   padding: 1rem;
- }
-</style>
-<style native>
- ActionBar {
-   color: red;
- }
-</style>
-```
-
-### Optional Separation of concerns for Web and Native SFC's
-If you want complete seperation of concerns between Web and Native for components, core logic and styling, you can also provide an alternate file naming scheme in your project. The name will dictate which mode (Web or Native) and platform (Android or IOS) the file will be used with. The same overall schema will work for `.vue`, `.js`, `.ts`, `.scss`, `.css`, `.styl`, and `.less` files.
+## Optional Separation of concerns for Web and Native SFC's
+Although this plugin lets you to use exactly same code for Native and Web platforms it also lets you to seperate component implementations if you need. You can use an alternate file naming scheme in your project for this purpose. The name will dictate which mode (Web or Native) and platform (Android or IOS) the file will be used with. The same overall schema will work for `.vue`, `.js`, `.ts`, `.scss`, `.css`, `.styl`, and `.less` files.
 
 | File Type  | Android __and__ IOS | Android only    | IOS only        | Web only        |
 | ---------- | ------------------- | --------------- | --------------- | --------------- |
@@ -74,7 +28,7 @@ This will allow you to develop generic native components under the `*.native.vue
 If you are building for web, then just `*.vue` will work and if you are building for a Native __only__ project, then `*.vue` will work as well as the previous options mentioned.
 
 ## Sharing components and assets between Native and Web SFC's
-If you want to use common components and assets between `web`, `android` and `ios`, you can do that.    For `assets`, place them in `src/assets` and for components, place them in `src/components`.  At compile time, assets will be copied to the output directory's `assets` folder and can be universally accessed across environments via something like `~/assets/logo.png`.  For components, they can be universally accessed via something similar to `components/HelloWorld`.
+If you want to use common components and assets between `web`, `android` and `ios`, you can do that. For `assets`, place them in `src/assets` and for components, place them in `src/components`.  At compile time, assets will be copied to the output directory's `assets` folder and can be universally accessed across environments via something like `~/assets/logo.png`.  For components, they can be universally accessed via something similar to `components/HelloWorld`.
 
 ## Install
 
@@ -102,10 +56,10 @@ vue add vue-cli-plugin-vuexp
     * Required parameter for the cli core generator when vuexp-router is used
 3.  Is this a brand new project? (Default: Yes)
     * By choosing `No`, the plugin will try and be as non-destructive as possible to an existing project.  It will do this by adding a folder into root named `vuexp-example` and add files into there to provide examples of how a project would change.
-    * These changes will factor in answers to the other questions and adjust accordingly.  Regardless of the answer, the plugin will install packages and adjust `package.json` as necessary to prep the project.
+    * These changes will factor in answers to the other questions and adjust accordingly. Regardless of the answer, the plugin will install packages and adjust `package.json` as necessary to prep the project.
 4.  What type of template do you want to start with? (Default: Simple)
     * Simple is just a simple setup with a header and basic routing with [Vuexp](https://github.com/vuexp/vuexp) components.
-    * Advanced (currently disabled), will allow you to start with a project that includes a fixed header and pop-out sidebar menu.
+    * Advanced will allow you to start with a project that includes a fixed header and pop-out sidebar menu. This template also includes common usages of Vxp Components.
     * We expect to add more templates in the future as use cases come up.
 
 ## Running the project
@@ -121,13 +75,13 @@ You will have several options in serving and building the project:
 The basic `serve` and `build` options should be similar to what is in a CLI 3 project except the added options to dictate which kind of environment you are using: `web`, `android` or `ios`.  Please note that when building web projects, they will output to `dist` and when building native projects, they will output to `platforms\android` or `platforms\ios` depending on which you are building at the time.
 
 ### Debugging your project
-You will have the standard options for debugging available to you as you would with just `tns`.  You can do the following to debug Native versions of your app.
+You will have the standard options for debugging available to you as you would with just `tns`. You can do the following to debug Native versions of your app.
 1.  `npm run debug:android`
 2.  `npm run debug:ios`
 
 You should then be able to attach the Chrome debugger as you normally would via the [NativeScript docs](https://docs.nativescript.org/angular/tooling/debugging/chrome-devtools).
 
-You should also be able to debug directly in VSCode.  The [NativeScript VSCode Extension docs](https://docs.nativescript.org/angular/tooling/visual-studio-code-extension) are a good place to start with understanding how to do this.  However, you will need to modify your `launch.json` file to force `tns` to work properly with VUE CLI 3.
+You should also be able to debug directly in VSCode. The [NativeScript VSCode Extension docs](https://docs.nativescript.org/angular/tooling/visual-studio-code-extension) are a good place to start with understanding how to do this. However, you will need to modify your `launch.json` file to force `tns` to work properly with VUE CLI 3.
 
 Your `launch.json` file should look something like below. Notice the different in the `tnsArgs` line that is different than what is in the documentation link above.
 ```json
