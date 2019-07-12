@@ -59,7 +59,7 @@ vue add vue-cli-plugin-vuexp
     * These changes will factor in answers to the other questions and adjust accordingly. Regardless of the answer, the plugin will install packages and adjust `package.json` as necessary to prep the project.
 4.  What type of template do you want to start with? (Default: Simple)
     * Simple is just a simple setup with a header and basic routing with [Vuexp](https://github.com/vuexp/vuexp) components.
-    * Advanced will allow you to start with a project that includes a fixed header and pop-out sidebar menu. This template also includes common usages of Vxp Components.
+    * Advanced will allow you to start with a project that includes a fixed header and pop-out sidebar menu. This template also includes common usages of VueXP Components.
     * We expect to add more templates in the future as use cases come up.
 
 ## Running the project
