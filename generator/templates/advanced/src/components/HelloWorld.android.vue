@@ -2,7 +2,7 @@
   <GridLayout rows="auto, auto">
     <VxpLabel class="message" :text="msg" row="0" horizontalAlignment="center"/>
     <!-- copy-webpack-plugin copies asset from src/assets to project output/build directory /assets -->
-    <VxpImage src="~/assets/icon.png" row="1" class="m-40" width="50" stretch="aspectFit"/>
+    <VxpImage src="~/assets/icon.png" row="1" class="x-image" width="50" stretch="aspectFit"/>
   </GridLayout>
 </template>
 <%_ if (!usingTS) { _%>
@@ -36,10 +36,11 @@ export default class HelloWorld extends Vue {
 <style scoped lang="scss">
 .message {
   color: #42b983;
+  margin-top: 80px;
 }
 
-image {
-  margin-top: 20px;
+.x-image {
+  margin-top: 80px;
 }
 </style>
 <%_   } else if (rootOptions.cssPreprocessor == 'stylus') { _%>
@@ -47,19 +48,21 @@ image {
 <style scoped lang="stylus">
   .message
     color #42b983
+    margin-top: 80px
 
-  Image
-    margin-top 20px
+  .x-image
+    margin-top 80px
 </style>
 <%_   } else if (rootOptions.cssPreprocessor == 'less') { _%>
 <%#   -------------------- IS Using Less -------------------- -%>
 <style scoped lang="less">
 .message {
   color: #42b983;
+  margin-top: 80px;
 }
 
-image {
-  margin-top: 20px;
+.x-image {
+  margin-top: 80px;
 }
 </style>
 <%_   } _%>
@@ -68,10 +71,11 @@ image {
 <style scoped>
 .message {
   color: #42b983;
+  margin-top: 80px;
 }
 
-image {
-  margin-top: 20px;
+.x-image {
+  margin-top: 80px;
 }
 </style>
 <%_ } _%>

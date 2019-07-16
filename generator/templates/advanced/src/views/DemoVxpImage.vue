@@ -3,7 +3,7 @@
     <CustomActionBar @itemTap="showDrawerPanel" />
     <SideLayout ref="sideLayout">
       <StackLayout>
-        <VxpImage src="~/components/icon.png" />
+        <VxpImage src="~/assets/icon.png" />
       </StackLayout>
     </SideLayout>
   </Page>

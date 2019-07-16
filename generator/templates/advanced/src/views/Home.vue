@@ -4,7 +4,7 @@
     <SideLayout ref="sideLayout">
       <VxpButton text="About2" @tap="goToAboutPage" row="0" />
 
-      <VxpImage src="~/assets/logo.png" row="1" class="logo" />
+      <VxpImage src="~/assets/logo.png" row="1" class="logo" stretch="aspectFit" />
 
       <HelloWorld :msg="msg" row="2" />
     </SideLayout>
@@ -67,41 +67,14 @@ export default class Home extends Vue {
 <%_   if (rootOptions.cssPreprocessor == 'sass' || rootOptions.cssPreprocessor == 'scss'  || rootOptions.cssPreprocessor == 'dart-sass' ) { _%>
 <%#   -------------------- IS Using sass, scss OR dart-sass -------------------- -%>
 <style scoped lang="scss">
+@import '~vuexp/src/assets/styles/helpers';
 @import '~styles/style-one';
 @import '~styles/style-two';
- .sidedrawer-doc-container {
-    height: 340px;
-
-    &__drawer {
-      background-color: #282b30;
-      color: #ffffff;
-      padding: 20px;
-      width: 200px;
-      height: 100%;
-
-      &__title {
-        text-align: center;
-        font-weight: bold;
-        color: #ebebeb;
-      }
-
-      &__VxpLabel {
-        line-height: 36px;
-        border-bottom: solid 1px red;
-        height:30px;
-      }
-    }
-
-    &__text {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-  }
 
 .logo {
-  width: 30%;
+  height: unit(100, 40);
   margin: auto;
-  margin-top: 4em;
+  margin-top: unit(40);
 }
 </style>
 <%_   } else if (rootOptions.cssPreprocessor == 'stylus') { _%>
@@ -110,11 +83,11 @@ export default class Home extends Vue {
 @import '~styles/style-one';
 @import '~styles/style-two';
 
-.logo {
-  width: 30%;
-  margin: auto;
-  margin-top: 4em;
-}
+.logo
+  width: 30%
+  margin: auto
+  margin-top: 40px
+
 </style>
 <%_   } else if (rootOptions.cssPreprocessor == 'less') { _%>
 <%#   -------------------- IS Using Less -------------------- -%>
@@ -125,7 +98,7 @@ export default class Home extends Vue {
 .logo {
   width: 30%;
   margin: auto;
-  margin-top: 4em;
+  margin-top: 40px;
 }
 </style>
 <%_   } _%>
@@ -138,7 +111,7 @@ export default class Home extends Vue {
 .logo {
   width: 30%;
   margin: auto;
-  margin-top: 4em;
+  margin-top: 40px;
 }
 </style>
 <%_ } _%>

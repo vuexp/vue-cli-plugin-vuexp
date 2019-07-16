@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="message">{{msg}}</div>
-    <img src="~/assets/icon.png" alt="logo">
+    <img src="~/assets/icon.png" alt="logo" class="x-image">
   </div>
 </template>
 <%_ if (!usingTS) { _%>
@@ -37,14 +37,14 @@ export default class HelloWorld extends Vue {
   color: #42b983;
   display: block;
   margin: auto;
-  margin-top: 4em;
+  margin-top: 40px;
   text-align: center;
 }
-img {
+.x-image {
   height: 75px;
   display: block;
   margin: auto;
-  margin-top: 4em;
+  margin-top: 40px;
 }
 </style>
 <%_   } else if (rootOptions.cssPreprocessor == 'stylus') { _%>
@@ -54,14 +54,14 @@ img {
     color #42b983
     display block
     margin auto
-    margin-top 4em
+    margin-top: 40px
     text-align center
 
-  img
+  .x-image
     height 75px
     display block
     margin auto
-    margin-top 4em
+    margin-top 40px
 </style>
 <%_   } else if (rootOptions.cssPreprocessor == 'less') { _%>
 <%#   -------------------- IS Using Less -------------------- -%>
@@ -70,14 +70,14 @@ img {
   color: #42b983;
   display: block;
   margin: auto;
-  margin-top: 4em;
+  margin-top: 40px;
   text-align: center;
 }
-img {
+.x-image {
   height: 75px;
   display: block;
   margin: auto;
-  margin-top: 4em;
+  margin-top: 40px;
 }
 </style>
 <%_   } _%>
@@ -88,14 +88,14 @@ img {
   color: #42b983;
   display: block;
   margin: auto;
-  margin-top: 4em;
+  margin-top: 40px;
   text-align: center;
 }
-img {
+.x-image {
   height: 75px;
   display: block;
   margin: auto;
-  margin-top: 4em;
+  margin-top: 40px;
 }
 </style>
 <%_ } _%>

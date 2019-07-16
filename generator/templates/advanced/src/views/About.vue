@@ -3,7 +3,7 @@
     <ActionBar :title="navbarTitle"/>
     <GridLayout rows="auto, auto">
       <VxpLabel text="This is an about page" :textWrap="true" horizontalAlignment="center" verticalAlignment="center" row="0" />
-      <VxpButton text="Go Home" @tap="goToHomePage" row="0" />
+      <VxpButton text="Go Home" @tap="goToHomePage" row="1" />
     </GridLayout>
   </Page>
 </template>
