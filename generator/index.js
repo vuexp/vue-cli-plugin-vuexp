@@ -52,7 +52,7 @@ module.exports = async (api, options, rootOptions) => {
 
   api.extendPackage({
     nativescript: {
-      id: 'org.nativescript.application',
+      id: commonRenderOptions.applicationId,
       'tns-ios': {
         version: '5.4.0'
       },

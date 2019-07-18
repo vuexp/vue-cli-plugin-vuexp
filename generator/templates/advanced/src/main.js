@@ -11,10 +11,19 @@ replace:
 <%# REPLACE %>
 import Vue from 'vue';
 import registerComponents from './componentRegisterer';
+import VxpPlugin from "vuexp/src/core/plugins/index.js";
+import AttributeMixin from "vuexp/src/mixins/AttributeMixin";
+import GestureMixin from "vuexp/src/core/mixins/GestureMixin";
+
+Vue.use(VxpPlugin);
+Vue.mixin(AttributeMixin);
+Vue.mixin(GestureMixin);
+
+import "./styles/advanced.scss";
 <%# END_REPLACE %>
 
 <%# REPLACE %>
-import App from '~/App.vue'; 
+import App from '~/App.vue';
 <%# END_REPLACE %>
 
 <%# REPLACE %>

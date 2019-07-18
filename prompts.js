@@ -3,7 +3,7 @@ module.exports = [
     name: 'applicationId',
     type: 'input',
     message: 'Enter a unique application identifier:',
-    default: 'org.nativescript.application',
+    default: 'org.vuexp.application',
     validate(applicationId) {
       const idRE = /^([A-Za-z][A-Za-z\d_]*\.)+[A-Za-z][A-Za-z\d_]*$/;
 
@@ -22,8 +22,8 @@ Example: com.company.app`;
   {
     name: 'historyMode',
     type: 'confirm',
-    message: 'Use HTML5 history mode? (Default: hash mode)',
-    default: false
+    message: 'Use HTML5 history mode? (Default: history mode)',
+    default: true
   },
   {
     name: 'isNewProject',
@@ -41,9 +41,8 @@ Example: com.company.app`;
         value: 'simple'
       },
       {
-        name: 'Advanced (not yet implemented)',
+        name: 'Advanced',
         value: 'advanced',
-        disabled: true
       }
     ],
     default: 'simple'
