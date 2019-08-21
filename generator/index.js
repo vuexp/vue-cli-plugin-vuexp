@@ -80,11 +80,7 @@ module.exports = async (api, options, rootOptions) => {
     dependencies: {
       'nativescript-vue': '~2.4.0',
       vuexp: '^0.3.0',
-      'vuexp-router': 'git://github.com/vuexp/vuexp-router.git#development',
-      'tns-core-modules': '~6.0.6',
-      'nativescript-background-http': '^3.4.0',
-      'nativescript-imagepicker': 'git://github.com/mylmz10/nativescript-mediapicker.git',
-      'nativescript-mediafilepicker': '2.0.15'
+      'tns-core-modules': '~6.0.6'
     },
     devDependencies: {
       'nativescript-dev-webpack': '~1.1.0',
@@ -108,6 +104,11 @@ module.exports = async (api, options, rootOptions) => {
   });
 
   if (rootOptions.router) {
+    api.extendPackage({
+      dependencies: {
+        'vuexp-router': 'git://github.com/vuexp/vuexp-router.git#development'
+      }
+    });
   }
 
   if (api.hasPlugin('typescript')) {

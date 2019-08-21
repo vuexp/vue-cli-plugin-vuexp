@@ -2,7 +2,7 @@ import Vue from 'nativescript-vue';
 import registerComponents from './componentRegisterer';
 import router from './router';
 
-import App from './App.vue';
+import App from './App';
 
 registerComponents(Vue);
 

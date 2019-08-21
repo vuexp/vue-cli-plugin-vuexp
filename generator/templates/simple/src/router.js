@@ -30,8 +30,8 @@ export const options = {
 <%# END_REPLACE %>
 
 <%# REPLACE %>
-import Home from '~/views/Home.vue';
-import About from '~/views/About.vue';
+import Home from '~/views/Home';
+import About from '~/views/About';
 <%# END_REPLACE %>
 
 <%# REPLACE %>

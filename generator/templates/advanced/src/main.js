@@ -11,7 +11,7 @@ replace:
 <%# REPLACE %>
 import Vue from 'vue';
 import registerComponents from './componentRegisterer';
-import VxpPlugin from "vuexp/src/core/plugins/index.js";
+import VxpPlugin from "vuexp/src/core/plugins/index";
 import AttributeMixin from "vuexp/src/mixins/AttributeMixin";
 import GestureMixin from "vuexp/src/core/mixins/GestureMixin";
 
@@ -23,7 +23,7 @@ import "./styles/advanced.scss";
 <%# END_REPLACE %>
 
 <%# REPLACE %>
-import App from '~/App.vue';
+import App from '~/App';
 <%# END_REPLACE %>
 
 <%# REPLACE %>
