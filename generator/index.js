@@ -54,10 +54,10 @@ module.exports = async (api, options, rootOptions) => {
     nativescript: {
       id: commonRenderOptions.applicationId,
       'tns-ios': {
-        version: '5.4.0'
+        version: '6.0.2'
       },
       'tns-android': {
-        version: '5.4.0'
+        version: '6.0.1'
       }
     },
     scripts: {
@@ -78,17 +78,17 @@ module.exports = async (api, options, rootOptions) => {
       'clean:ios': 'rimraf platforms/ios'
     },
     dependencies: {
-      'nativescript-vue': '^2.2.2',
+      'nativescript-vue': '~2.4.0',
       vuexp: '^0.3.0',
       'vuexp-router': 'git://github.com/vuexp/vuexp-router.git#development',
-      'tns-core-modules': '^5.4.1',
+      'tns-core-modules': '~6.0.6',
       'nativescript-background-http': '^3.4.0',
       'nativescript-imagepicker': 'git://github.com/mylmz10/nativescript-mediapicker.git',
       'nativescript-mediafilepicker': '2.0.15'
     },
     devDependencies: {
-      'nativescript-dev-webpack': '^0.24.0',
-      'nativescript-vue-template-compiler': '^2.2.2',
+      'nativescript-dev-webpack': '~1.1.0',
+      'nativescript-vue-template-compiler': '~2.4.0',
       'nativescript-worker-loader': '~0.9.5',
       'node-sass': '^4.11.0',
       'string-replace-loader': '^2.1.1',
