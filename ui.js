@@ -2,7 +2,7 @@
 module.exports = (api) => {
   api.describeConfig({
     // Unique ID for the config
-    id: 'org.nativescript-vue.plugin.cli',
+    id: 'org.vuexp.application',
     // Displayed name
     name: 'Nativescript-Vue CLI 3 Plugin',
     // Shown below the name
