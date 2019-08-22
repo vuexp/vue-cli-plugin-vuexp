@@ -42,7 +42,7 @@ export default {
 <%# -------------------- Is Using TypeScript  -------------------- -%>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from 'components/HelloWorld.vue';
+import HelloWorld from 'components/HelloWorld';
 
 const { VUE_APP_MODE, VUE_APP_PLATFORM } = process.env;
 

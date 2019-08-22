@@ -14,7 +14,7 @@ import registerComponents from './componentRegisterer';
 <%# END_REPLACE %>
 
 <%# REPLACE %>
-import App from '~/App.vue';
+import App from '~/App';
 <%# END_REPLACE %>
 
 <%# REPLACE %>
