@@ -1,8 +1,6 @@
 <template>
   <GridLayout rows="auto, auto">
-    <VxpLabel class="message" :text="msg" row="0" horizontalAlignment="center"/>
-    <!-- copy-webpack-plugin copies asset from src/assets to project output/build directory /assets -->
-    <VxpImage src="~/components/icon.png" row="1" class="m-40" width="50" stretch="aspectFit"/>
+    <VxpLabel class="message" :text="msg" row="0" horizontalAlignment="center"/> 
   </GridLayout>
 </template>
 <%_ if (!usingTS) { _%>
@@ -29,49 +27,15 @@ export default class HelloWorld extends Vue {
 }
 </script>
 <%_ } _%>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<%_ if (rootOptions.cssPreprocessor) { _%>
-<%_   if (rootOptions.cssPreprocessor == 'sass' || rootOptions.cssPreprocessor == 'scss'  || rootOptions.cssPreprocessor == 'dart-sass' ) { _%>
-<%#   -------------------- IS Using sass, scss OR dart-sass -------------------- -%>
+
+<!-- Add "scoped" attribute to limit CSS to this component only --> 
 <style scoped lang="scss">
-.message {
-  color: #42b983;
-}
+  @import "~vuexp/src/assets/styles/helpers";
+  .message {
+    color: #42b983;
+  }
 
-image {
-  margin-top: 20px;
-}
-</style>
-<%_   } else if (rootOptions.cssPreprocessor == 'stylus') { _%>
-<%#   -------------------- IS Using stylus -------------------- -%>
-<style scoped lang="stylus">
-  .message
-    color #42b983
-
-  Image
-    margin-top 20px
-</style>
-<%_   } else if (rootOptions.cssPreprocessor == 'less') { _%>
-<%#   -------------------- IS Using Less -------------------- -%>
-<style scoped lang="less">
-.message {
-  color: #42b983;
-}
-
-image {
-  margin-top: 20px;
-}
-</style>
-<%_   } _%>
-<%_ } else { _%>
-<%# -------------------- IS Using standard CSS -------------------- -%>
-<style scoped>
-.message {
-  color: #42b983;
-}
-
-image {
-  margin-top: 20px;
-}
-</style>
-<%_ } _%>
+  image {
+    margin-top: unit(20);
+  }
+</style> 

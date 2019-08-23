@@ -59,54 +59,12 @@ export default class Home extends Vue {
 }
 </script>
 <%_ } _%>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<%_ if (rootOptions.cssPreprocessor) { _%>
-<%_   if (rootOptions.cssPreprocessor == 'sass' || rootOptions.cssPreprocessor == 'scss'  || rootOptions.cssPreprocessor == 'dart-sass' ) { _%>
-<%#   -------------------- IS Using sass, scss OR dart-sass -------------------- -%>
-<style scoped lang="scss">
-@import '~styles/style-one';
-@import '~styles/style-two';
 
-.logo {
-  width: 30%;
-  margin: auto;
-  margin-top: 4em;
-}
-</style>
-<%_   } else if (rootOptions.cssPreprocessor == 'stylus') { _%>
-<%#   -------------------- IS Using stylus -------------------- -%>
-<style scoped lang="stylus">
-  @import '~styles/style-one';
-  @import '~styles/style-two';
-
-  .logo
-    width 30%
-    margin auto
-    margin-top 4em
-</style>
-<%_   } else if (rootOptions.cssPreprocessor == 'less') { _%>
-<%#   -------------------- IS Using Less -------------------- -%>
-<style scoped lang="less">
-@import '~styles/style-one';
-@import '~styles/style-two';
-
-.logo {
-  width: 30%;
-  margin: auto;
-  margin-top: 4em;
-}
-</style>
-<%_   } _%>
-<%_ } else { _%>
-<%# -------------------- IS Using standard CSS -------------------- -%>
-<style scoped>
-@import '~styles/style-one';
-@import '~styles/style-two';
-
-.logo {
-  width: 30%;
-  margin: auto;
-  margin-top: 4em;
-}
-</style>
-<%_ } _%>
+<!-- Add "scoped" attribute to limit CSS to this component only --> 
+<style scoped lang="scss"> 
+  .logo {
+    width: 30%;
+    margin: auto;
+    margin-top: 4em;
+  }
+</style> 

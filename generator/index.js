@@ -79,7 +79,7 @@ module.exports = async (api, options, rootOptions) => {
     },
     dependencies: {
       'nativescript-vue': '~2.4.0',
-      vuexp: '^0.3.0',
+      vuexp: 'git://github.com/vuexp/vuexp.git#integration/v0.3.1',
       'tns-core-modules': '~6.0.6'
     },
     devDependencies: {
@@ -88,7 +88,8 @@ module.exports = async (api, options, rootOptions) => {
       'nativescript-worker-loader': '~0.9.5',
       'node-sass': '^4.11.0',
       'string-replace-loader': '^2.1.1',
-      rimraf: '^2.6.3'
+      rimraf: '^2.6.3',
+      'sass-loader': '^7.1.0'
       // webpack: '4.28.4',
       // 'webpack-cli': '^3.3.2'
     }

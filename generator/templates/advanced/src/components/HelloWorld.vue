@@ -28,74 +28,21 @@ export default class HelloWorld extends Vue {
 }
 </script>
 <%_ } _%>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<%_ if (rootOptions.cssPreprocessor) { _%>
-<%_   if (rootOptions.cssPreprocessor == 'sass' || rootOptions.cssPreprocessor == 'scss'  || rootOptions.cssPreprocessor == 'dart-sass' ) { _%>
-<%#   -------------------- IS Using sass, scss OR dart-sass -------------------- -%>
-<style scoped lang="scss">
-.message {
-  color: #42b983;
-  display: block;
-  margin: auto;
-  margin-top: 40px;
-  text-align: center;
-}
-.x-image {
-  height: 75px;
-  display: block;
-  margin: auto;
-  margin-top: 40px;
-}
-</style>
-<%_   } else if (rootOptions.cssPreprocessor == 'stylus') { _%>
-<%#   -------------------- IS Using stylus -------------------- -%>
-<style scoped lang="stylus">
-  .message
-    color #42b983
-    display block
-    margin auto
-    margin-top: 40px
-    text-align center
 
-  .x-image
-    height 75px
-    display block
-    margin auto
-    margin-top 40px
-</style>
-<%_   } else if (rootOptions.cssPreprocessor == 'less') { _%>
-<%#   -------------------- IS Using Less -------------------- -%>
-<style scoped lang="less">
-.message {
-  color: #42b983;
-  display: block;
-  margin: auto;
-  margin-top: 40px;
-  text-align: center;
-}
-.x-image {
-  height: 75px;
-  display: block;
-  margin: auto;
-  margin-top: 40px;
-}
-</style>
-<%_   } _%>
-<%_ } else { _%>
-<%# -------------------- IS Using standard CSS -------------------- -%>
-<style scoped>
-.message {
-  color: #42b983;
-  display: block;
-  margin: auto;
-  margin-top: 40px;
-  text-align: center;
-}
-.x-image {
-  height: 75px;
-  display: block;
-  margin: auto;
-  margin-top: 40px;
-}
-</style>
-<%_ } _%>
+<!-- Add "scoped" attribute to limit CSS to this component only --> 
+<style scoped lang="scss">
+  @import "~vuexp/src/assets/styles/helpers";
+  .message {
+    color: #42b983;
+    display: block;
+    margin: auto;
+    margin-top: unit(40);
+    text-align: center;
+  }
+  .x-image {
+    height: unit(75);
+    display: block;
+    margin: auto;
+    margin-top: unit(40);
+  }
+</style> 

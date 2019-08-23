@@ -19,7 +19,7 @@ Vue.use(VxpPlugin);
 Vue.mixin(AttributeMixin);
 Vue.mixin(GestureMixin);
 
-import "./styles/advanced.scss";
+//import "./styles/advanced.scss";
 <%# END_REPLACE %>
 
 <%# REPLACE %>
