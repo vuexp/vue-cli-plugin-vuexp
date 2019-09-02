@@ -6,6 +6,8 @@ const replace = require('replace-in-file');
 
 const newline = process.platform === 'win32' ? '\r\n' : '\n';
 
+const PluginVersion = require('../package.json').version;
+
 module.exports = async (api, options, rootOptions) => {
   console.log(rootOptions);
   const genConfig = {
@@ -79,18 +81,18 @@ module.exports = async (api, options, rootOptions) => {
       'clean:ios': 'rimraf platforms/ios'
     },
     dependencies: {
-      'nativescript-vue': '~2.4.0',
+      'nativescript-vue': '2.4.0',
       vuexp: 'git://github.com/vuexp/vuexp.git#integration/v0.3.1',
-      'tns-core-modules': '~6.0.6'
+      'tns-core-modules': '6.0.6'
     },
     devDependencies: {
-      'nativescript-dev-webpack': '~1.1.0',
-      'nativescript-vue-template-compiler': '~2.4.0',
-      'nativescript-worker-loader': '~0.9.5',
-      'node-sass': '^4.11.0',
-      'string-replace-loader': '^2.1.1',
-      rimraf: '^2.6.3',
-      'sass-loader': '^7.1.0'
+      'nativescript-dev-webpack': '1.1.0',
+      'nativescript-vue-template-compiler': '2.2.2',
+      'nativescript-worker-loader': '0.9.5',
+      'node-sass': '4.12.0',
+      'string-replace-loader': '2.1.1',
+      rimraf: '2.6.3',
+      'sass-loader': '7.1.0'
       // webpack: '4.28.4',
       // 'webpack-cli': '^3.3.2'
     }
@@ -109,8 +111,8 @@ module.exports = async (api, options, rootOptions) => {
     api.extendPackage({
       dependencies: {},
       devDependencies: {
-        'fork-ts-checker-webpack-plugin': '^1.3.4',
-        'terser-webpack-plugin': '^1.3.0'
+        'fork-ts-checker-webpack-plugin': '1.3.4',
+        'terser-webpack-plugin': '1.3.0'
         //'tns-platform-declarations': '^4.2.1'
       }
     });
@@ -120,7 +122,7 @@ module.exports = async (api, options, rootOptions) => {
       api.extendPackage({
         dependencies: {},
         devDependencies: {
-          '@babel/types': '^7.4.4'
+          '@babel/types': '7.4.4'
         }
       });
     }
@@ -130,10 +132,10 @@ module.exports = async (api, options, rootOptions) => {
   if (api.hasPlugin('babel')) {
     api.extendPackage({
       devDependencies: {
-        '@babel/core': '^7.4.5',
-        '@babel/preset-env': '^7.4.5',
-        'babel-loader': '^8.0.6',
-        '@babel/traverse': '^7.4.5'
+        '@babel/core': '7.4.5',
+        '@babel/preset-env': '7.4.5',
+        'babel-loader': '8.0.6',
+        '@babel/traverse': '7.4.5'
       }
     });
 
@@ -167,6 +169,15 @@ module.exports = async (api, options, rootOptions) => {
     // we will be replacing these
     delete pkg.scripts['serve'];
     delete pkg.scripts['build'];
+  });
+
+  // if the project has this plugin move from devDependency to dependency
+  api.extendPackage((pkg) => {
+    if (api.hasPlugin('vue-cli-plugin-vuexp')) {
+      delete pkg.devDependencies['vue-cli-plugin-vuexp'];
+    }
+
+    pkg.dependencies['vue-cli-plugin-vuexp'] = PluginVersion;
   });
 
   console.log('doing template rendering');
@@ -316,9 +327,10 @@ const vuexSetup = (module.exports.vuexSetup = async (api, options, filePathPrefi
 // for new projects it will write to the root of the project
 // and for existing projects it will write it to the ./vuexp-example directory
 const applyBabelConfig = (module.exports.applyBabelConfig = async (api, genConfig, filePath) => {
+  const replaceRegex = new RegExp(/'@vue\/app'|"@vue\/app"/);
   const babelReplaceOptions = {
     files: '',
-    from: "  '@vue/app'",
+    from: replaceRegex,
     to: "  process.env.VUE_PLATFORM === 'web' ? '@vue/app' : {}, " + newline + "    ['@babel/env', { targets: { esmodules: true } }]"
   };
 
