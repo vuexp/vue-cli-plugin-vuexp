@@ -9,7 +9,6 @@ const newline = process.platform === 'win32' ? '\r\n' : '\n';
 const PluginVersion = require('../package.json').version;
 
 module.exports = async (api, options, rootOptions) => {
-  console.log(rootOptions);
   const genConfig = {
     // if it is a new project changes will be written as they normally would with any plugin
     // if it is an existing project, changes will be added to the ./vuexp-example directory
@@ -140,8 +139,6 @@ module.exports = async (api, options, rootOptions) => {
     });
 
     api.render(async () => {
-      console.log(api.resolve(path.join(genConfig.dirPathPrefix, 'babel.config.js')));
-      console.log(genConfig.dirPathPrefix + 'babel.config.js');
       fs.ensureFileSync(api.resolve(path.join(genConfig.dirPathPrefix, 'babel.config.js')));
       await applyBabelConfig(api, genConfig, 'babel.config.js');
     });
