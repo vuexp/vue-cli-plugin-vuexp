@@ -6,6 +6,8 @@ const replace = require('replace-in-file');
 
 const newline = process.platform === 'win32' ? '\r\n' : '\n';
 
+const PluginVersion = require('../package.json').version;
+
 module.exports = async (api, options, rootOptions) => {
   const genConfig = {
     // if it is a new project changes will be written as they normally would with any plugin
@@ -17,7 +19,6 @@ module.exports = async (api, options, rootOptions) => {
     jsOrTs: api.hasPlugin('typescript') ? '.ts' : '.js',
 
     // A template type of 'simple' project will have a base template path that equals: ./templates/simple
-    // then we determine if the project is using Nativescript-Vue-Web and we append a subdirectory to the base path
     templateTypePathModifer: options.templateType,
 
     // Get the location to the native app directory
@@ -43,6 +44,7 @@ module.exports = async (api, options, rootOptions) => {
     applicationLicense: api.generator.pkg.license || 'MIT',
     applicationId: options.applicationId,
     historyMode: options.historyMode,
+    vuexpRouter: options.vuexpRouter || api.hasPlugin('router'),
     doesCompile: api.hasPlugin('babel') || api.hasPlugin('typescript'),
     usingBabel: api.hasPlugin('babel'),
     usingTS: api.hasPlugin('typescript')
@@ -78,18 +80,18 @@ module.exports = async (api, options, rootOptions) => {
       'clean:ios': 'rimraf platforms/ios'
     },
     dependencies: {
-      'nativescript-vue': '~2.4.0',
+      'nativescript-vue': '2.4.0',
       vuexp: 'git://github.com/vuexp/vuexp.git#integration/v0.3.1',
-      'tns-core-modules': '~6.0.6'
+      'tns-core-modules': '6.0.6'
     },
     devDependencies: {
-      'nativescript-dev-webpack': '~1.1.0',
-      'nativescript-vue-template-compiler': '~2.4.0',
-      'nativescript-worker-loader': '~0.9.5',
-      'node-sass': '^4.11.0',
-      'string-replace-loader': '^2.1.1',
-      rimraf: '^2.6.3',
-      'sass-loader': '^7.1.0'
+      'nativescript-dev-webpack': '1.1.0',
+      'nativescript-vue-template-compiler': '2.2.2',
+      'nativescript-worker-loader': '0.9.5',
+      'node-sass': '4.12.0',
+      'string-replace-loader': '2.1.1',
+      rimraf: '2.6.3',
+      'sass-loader': '7.1.0'
       // webpack: '4.28.4',
       // 'webpack-cli': '^3.3.2'
     }
@@ -104,20 +106,12 @@ module.exports = async (api, options, rootOptions) => {
     }
   });
 
-  if (rootOptions.router) {
-    api.extendPackage({
-      dependencies: {
-        'vuexp-router': 'git://github.com/vuexp/vuexp-router.git#development'
-      }
-    });
-  }
-
   if (api.hasPlugin('typescript')) {
     api.extendPackage({
       dependencies: {},
       devDependencies: {
-        'fork-ts-checker-webpack-plugin': '^1.3.4',
-        'terser-webpack-plugin': '^1.3.0'
+        'fork-ts-checker-webpack-plugin': '1.3.4',
+        'terser-webpack-plugin': '1.3.0'
         //'tns-platform-declarations': '^4.2.1'
       }
     });
@@ -127,7 +121,7 @@ module.exports = async (api, options, rootOptions) => {
       api.extendPackage({
         dependencies: {},
         devDependencies: {
-          '@babel/types': '^7.4.4'
+          '@babel/types': '7.4.4'
         }
       });
     }
@@ -137,16 +131,16 @@ module.exports = async (api, options, rootOptions) => {
   if (api.hasPlugin('babel')) {
     api.extendPackage({
       devDependencies: {
-        '@babel/core': '^7.4.5',
-        '@babel/preset-env': '^7.4.5',
-        'babel-loader': '^8.0.6',
-        '@babel/traverse': '^7.4.5'
+        '@babel/core': '7.4.5',
+        '@babel/preset-env': '7.4.5',
+        'babel-loader': '8.0.6',
+        '@babel/traverse': '7.4.5'
       }
     });
 
     api.render(async () => {
-      fs.ensureFileSync(genConfig.dirPathPrefix + 'babel.config.js');
-      await applyBabelConfig(api, genConfig.dirPathPrefix + 'babel.config.js');
+      fs.ensureFileSync(api.resolve(path.join(genConfig.dirPathPrefix, 'babel.config.js')));
+      await applyBabelConfig(api, genConfig, 'babel.config.js');
     });
   }
 
@@ -172,6 +166,15 @@ module.exports = async (api, options, rootOptions) => {
     // we will be replacing these
     delete pkg.scripts['serve'];
     delete pkg.scripts['build'];
+  });
+
+  // if the project has this plugin move from devDependency to dependency
+  api.extendPackage((pkg) => {
+    if (api.hasPlugin('vue-cli-plugin-vuexp')) {
+      delete pkg.devDependencies['vue-cli-plugin-vuexp'];
+    }
+
+    pkg.dependencies['vue-cli-plugin-vuexp'] = PluginVersion;
   });
 
   console.log('doing template rendering');
@@ -203,7 +206,7 @@ module.exports = async (api, options, rootOptions) => {
     );
 
     // add router statements to src/main.*s
-    await vueRouterSetup(api, genConfig.dirPathPrefix, genConfig.jsOrTs);
+    await routerSetup(api, rootOptions, genConfig.dirPathPrefix, genConfig.jsOrTs, commonRenderOptions.vuexpRouter);
 
     // add vuex statements to src/main.*s
     await vuexSetup(api, options, genConfig.dirPathPrefix, genConfig.jsOrTs, genConfig.nativeAppPathModifier);
@@ -217,7 +220,7 @@ module.exports = async (api, options, rootOptions) => {
     writeRootFiles(api, options, genConfig.dirPathPrefix);
 
     // create nsconfig.json in ./ or ./vuexp-example
-    nsconfigSetup(genConfig.dirPathPrefix, api.resolve('nsconfig.json'), genConfig.nativeAppPathModifier, genConfig.appResourcesPathModifier, options);
+    nsconfigSetup(api, genConfig.dirPathPrefix, api.resolve('nsconfig.json'), genConfig.nativeAppPathModifier, genConfig.appResourcesPathModifier, options);
 
     // remove router config for projects that don't use vue-router
     if (!rootOptions.router) {
@@ -281,15 +284,21 @@ module.exports = async (api, options, rootOptions) => {
   });
 };
 
-// setup vue-router options
-// will not setup any vue-router options for native app
+// setup router options
 // for new projects it will write to changes as normal
 // and for existing projects it will write  changes to the ./vuexp-example directory
-const vueRouterSetup = (module.exports.vueRouterSetup = async (api, filePathPrefix, jsOrTs) => {
+const routerSetup = (module.exports.routerSetup = async (api, rootOptions, filePathPrefix, jsOrTs, vuexpRouter) => {
   try {
-    if (api.hasPlugin('vue-router')) {
-      api.injectImports(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `import router from './router';`);
-      api.injectRootOptions(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `router`);
+    if (vuexpRouter) {
+      api.extendPackage({
+        dependencies: {
+          'vuexp-router': 'git://github.com/vuexp/vuexp-router.git#development'
+        }
+      });
+      if (!rootOptions.router) {
+        api.injectImports(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `import router from './router';`);
+        api.injectRootOptions(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `router`);
+      }
     }
   } catch (err) {
     throw err;
@@ -302,10 +311,7 @@ const vueRouterSetup = (module.exports.vueRouterSetup = async (api, filePathPref
 const vuexSetup = (module.exports.vuexSetup = async (api, options, filePathPrefix, jsOrTs, nativeAppPathModifier) => {
   try {
     if (api.hasPlugin('vuex')) {
-      api.injectImports(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `import store from './store';`);
-      api.injectRootOptions(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `store`);
-
-      // if we're using Nativescript-Vue-Web, then we have to modify the main.native file
+      // if we're using vuex, then we have to modify the main.native file
       api.injectImports(filePathPrefix.replace(/.\//, '') + 'src/main.native' + jsOrTs, `import store from './store';`);
       api.injectRootOptions(filePathPrefix.replace(/.\//, '') + 'src/main.native' + jsOrTs, `store`);
     }
@@ -317,18 +323,19 @@ const vuexSetup = (module.exports.vuexSetup = async (api, options, filePathPrefi
 // write out babel.config.js options by adding options and replacing the base @vue/app
 // for new projects it will write to the root of the project
 // and for existing projects it will write it to the ./vuexp-example directory
-const applyBabelConfig = (module.exports.applyBabelConfig = async (api, filePath) => {
+const applyBabelConfig = (module.exports.applyBabelConfig = async (api, genConfig, filePath) => {
+  const replaceRegex = new RegExp(/'@vue\/app'|"@vue\/app"/);
   const babelReplaceOptions = {
     files: '',
-    from: "  '@vue/app'",
+    from: replaceRegex,
     to: "  process.env.VUE_PLATFORM === 'web' ? '@vue/app' : {}, " + newline + "    ['@babel/env', { targets: { esmodules: true } }]"
   };
 
   try {
-    babelReplaceOptions.files = filePath;
+    babelReplaceOptions.files = api.resolve(path.join(genConfig.dirPathPrefix, filePath));
 
     api.render((files) => {
-      files[filePath] = api.genJSConfig({
+      files[genConfig.dirPathPrefix + filePath] = api.genJSConfig({
         plugins: ['@babel/plugin-syntax-dynamic-import'],
         presets: ['@vue/app']
       });
@@ -354,7 +361,7 @@ const writeRootFiles = (module.exports.writeRootFiles = async (api, options, fil
     const envProductionIOS = 'NODE_ENV=production' + newline + 'VUE_APP_PLATFORM=ios' + newline + 'VUE_APP_MODE=native';
 
     fs.writeFileSync(
-      filePathPrefix + '.env.development.android',
+      api.resolve(path.join(filePathPrefix, '.env.development.android')),
       envDevelopmentAndroid,
       {
         encoding: 'utf8'
@@ -364,7 +371,7 @@ const writeRootFiles = (module.exports.writeRootFiles = async (api, options, fil
       }
     );
     fs.writeFileSync(
-      filePathPrefix + '.env.development.ios',
+      api.resolve(path.join(filePathPrefix, '.env.development.ios')),
       envDevelopmentIOS,
       {
         encoding: 'utf8'
@@ -374,7 +381,7 @@ const writeRootFiles = (module.exports.writeRootFiles = async (api, options, fil
       }
     );
     fs.writeFileSync(
-      filePathPrefix + '.env.production.android',
+      api.resolve(path.join(filePathPrefix, '.env.production.android')),
       envProductionAndroid,
       {
         encoding: 'utf8'
@@ -384,7 +391,7 @@ const writeRootFiles = (module.exports.writeRootFiles = async (api, options, fil
       }
     );
     fs.writeFileSync(
-      filePathPrefix + '.env.production.ios',
+      api.resolve(path.join(filePathPrefix, '.env.production.ios')),
       envProductionIOS,
       {
         encoding: 'utf8'
@@ -400,7 +407,7 @@ const writeRootFiles = (module.exports.writeRootFiles = async (api, options, fil
     const envProductionWeb = 'NODE_ENV=production' + newline + 'VUE_APP_PLATFORM=web' + newline + 'VUE_APP_MODE=web';
 
     fs.writeFileSync(
-      filePathPrefix + '.env.development.web',
+      api.resolve(path.join(filePathPrefix, '.env.development.web')),
       envDevelopmentWeb,
       {
         encoding: 'utf8'
@@ -410,7 +417,7 @@ const writeRootFiles = (module.exports.writeRootFiles = async (api, options, fil
       }
     );
     fs.writeFileSync(
-      filePathPrefix + '.env.production.web',
+      api.resolve(path.join(filePathPrefix, '.env.production.web')),
       envProductionWeb,
       {
         encoding: 'utf8'
@@ -426,7 +433,7 @@ const writeRootFiles = (module.exports.writeRootFiles = async (api, options, fil
       const globalTypes =
         'declare const TNS_ENV: string;' + newline + 'declare const TNS_APP_PLATFORM: string;' + newline + 'declare const TNS_APP_MODE: string;';
       fs.outputFileSync(
-        filePathPrefix + 'types/globals.d.ts',
+        path.join(filePathPrefix, 'types/globals.d.ts'),
         globalTypes,
         {
           encoding: 'utf8'
@@ -478,7 +485,7 @@ const gitignoreAdditions = (module.exports.gitignoreAdditions = async (api) => {
 
 // setup nsconfig.json file.  for new projects it will write to the root of the project
 // and for existing projects it will write it to the ./vuexp-example directory
-const nsconfigSetup = (module.exports.nsconfigSetup = async (dirPathPrefix, nsconfigPath, nativeAppPathModifier, appResourcesPathModifier, options) => {
+const nsconfigSetup = (module.exports.nsconfigSetup = async (api, dirPathPrefix, nsconfigPath, nativeAppPathModifier, appResourcesPathModifier, options) => {
   let nsconfigContent = '';
 
   try {
@@ -499,8 +506,10 @@ const nsconfigSetup = (module.exports.nsconfigSetup = async (dirPathPrefix, nsco
       nsconfigContent.useLegacyWorkflow = false;
     }
 
+    console.log('override nsconfig file: ', api.resolve(path.join(dirPathPrefix, 'nsconfig.json')));
+
     fs.writeFileSync(
-      dirPathPrefix + 'nsconfig.json',
+      api.resolve(path.join(dirPathPrefix, 'nsconfig.json')),
       JSON.stringify(nsconfigContent, null, 2),
       {
         encoding: 'utf8'
