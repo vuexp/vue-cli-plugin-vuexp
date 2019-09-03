@@ -42,9 +42,21 @@ Example: com.company.app`;
       },
       {
         name: 'Advanced',
-        value: 'advanced',
+        value: 'advanced'
+      },
+      {
+        name: 'Custom',
+        value: 'custom'
       }
     ],
-    default: 'simple'
+    default: 'custom'
+  },
+  {
+    name: 'customTemplatePath',
+    type: 'input',
+    message: 'Enter custom template path',
+    when(answers) {
+      return answers.templateType == 'custom';
+    }
   }
 ];

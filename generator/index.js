@@ -17,7 +17,7 @@ module.exports = async (api, options, rootOptions) => {
     jsOrTs: api.hasPlugin('typescript') ? '.ts' : '.js',
 
     // A template type of 'simple' project will have a base template path that equals: ./templates/simple
-    // then we determine if the project is using Nativescript-Vue-Web and we append a subdirectory to the base path
+    // then we determine if the project is using VueXP and we append a subdirectory to the base path
     templateTypePathModifer: options.templateType,
 
     // Get the location to the native app directory
@@ -174,6 +174,11 @@ module.exports = async (api, options, rootOptions) => {
     delete pkg.scripts['build'];
   });
 
+  if (options.templateType == 'custom') {
+    await extendPackageJSONWithCustomTemplatesDependencies(api, options.customTemplatePath);
+    await copyCustomTemplate(options.customTemplatePath);
+  }
+
   console.log('doing template rendering');
 
   // render App_Resources folder
@@ -206,7 +211,7 @@ module.exports = async (api, options, rootOptions) => {
     await vueRouterSetup(api, genConfig.dirPathPrefix, genConfig.jsOrTs);
 
     // add vuex statements to src/main.*s
-    await vuexSetup(api, options, genConfig.dirPathPrefix, genConfig.jsOrTs, genConfig.nativeAppPathModifier);
+    await vuexSetup(api, options, genConfig.dirPathPrefix, genConfig.jsOrTs);
   });
 
   api.onCreateComplete(async () => {
@@ -299,13 +304,13 @@ const vueRouterSetup = (module.exports.vueRouterSetup = async (api, filePathPref
 // setup Vuex options
 // for new projects it will write to changes as normal
 // and for existing projects it will write  changes to the ./vuexp-example directory
-const vuexSetup = (module.exports.vuexSetup = async (api, options, filePathPrefix, jsOrTs, nativeAppPathModifier) => {
+const vuexSetup = (module.exports.vuexSetup = async (api, options, filePathPrefix, jsOrTs) => {
   try {
     if (api.hasPlugin('vuex')) {
       api.injectImports(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `import store from './store';`);
       api.injectRootOptions(filePathPrefix.replace(/.\//, '') + 'src/main' + jsOrTs, `store`);
 
-      // if we're using Nativescript-Vue-Web, then we have to modify the main.native file
+      // if we're using VueXP, then we have to modify the main.native file
       api.injectImports(filePathPrefix.replace(/.\//, '') + 'src/main.native' + jsOrTs, `import store from './store';`);
       api.injectRootOptions(filePathPrefix.replace(/.\//, '') + 'src/main.native' + jsOrTs, `store`);
     }
@@ -761,6 +766,46 @@ const getAllFilesInDirStructure = (module.exports.replaceInFile = async (srcPath
   } catch (error) {
     console.log(error);
   }
+});
+
+// utility function used to extend package.json with the dependencies from custom template's package.json
+const extendPackageJSONWithCustomTemplatesDependencies = (module.exports.extendPackageJSONWithCustomTemplatesDependencies = async (api, srcPathPrefix) => {
+  try {
+    const packageJSONPath = path.join(srcPathPrefix, 'package.json');
+    if (!fs.existsSync(packageJSONPath)) {
+      return;
+    }
+
+    const templatesPackageJSON = fs.readJsonSync(packageJSONPath, { encoding: 'utf8' });
+
+    let newDeps = {};
+    for (let currentDepName in templatesPackageJSON.dependencies) {
+      if (!api.hasPlugin(currentDepName)) {
+        newDeps[currentDepName] = templatesPackageJSON.dependencies[currentDepName];
+      }
+    }
+    api.extendPackage({ dependencies: newDeps });
+
+    let newDevDeps = {};
+    for (let currentDevDepName in templatesPackageJSON.devDependencies) {
+      if (!api.hasPlugin(currentDevDepName)) {
+        newDevDeps[currentDevDepName] = templatesPackageJSON.devDependencies[currentDevDepName];
+      }
+    }
+    api.extendPackage({ devDependencies: newDevDeps });
+  } catch (error) {
+    throw error;
+  }
+});
+
+// copies custom template to generator/templates folder.
+const copyCustomTemplate = (module.exports.extendPackageJSONWithCustomTemplatesDependencies = async (customTemplatePath) => {
+  if (fs.existsSync(path.resolve(__dirname, 'templates', 'custom'))) {
+    fs.removeSync(path.resolve(__dirname, 'templates', 'custom'));
+  }
+
+  fs.mkdirSync(path.resolve(__dirname, 'templates', 'custom'));
+  fs.copySync(customTemplatePath, path.resolve(__dirname, 'templates', 'custom'));
 });
 
 // utility function used to remove sections of strings from files
