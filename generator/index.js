@@ -354,7 +354,6 @@ const applyBabelConfig = (module.exports.applyBabelConfig = async (api, genConfi
 // Typescript projects.  for new projects it will write files to the root of the project
 // and for existing projects it will write it to the ./vuexp-example directory
 const writeRootFiles = (module.exports.writeRootFiles = async (api, options, filePathPrefix) => {
-  console.log('writeRootFiles');
   try {
     const envDevelopmentAndroid = 'NODE_ENV=development' + newline + 'VUE_APP_PLATFORM=android' + newline + 'VUE_APP_MODE=native';
     const envDevelopmentIOS = 'NODE_ENV=development' + newline + 'VUE_APP_PLATFORM=ios' + newline + 'VUE_APP_MODE=native';
@@ -488,8 +487,6 @@ const gitignoreAdditions = (module.exports.gitignoreAdditions = async (api) => {
 // and for existing projects it will write it to the ./vuexp-example directory
 const nsconfigSetup = (module.exports.nsconfigSetup = async (api, dirPathPrefix, nsconfigPath, nativeAppPathModifier, appResourcesPathModifier, options) => {
   let nsconfigContent = '';
-
-  console.log('nsconfigPath', nsconfigPath);
 
   try {
     if (fs.existsSync(nsconfigPath)) {
