@@ -74,7 +74,6 @@ Example: com.company.app`;
     name: 'customTemplatePath',
     type: 'input',
     message: 'Enter custom template path',
-    default: '/Users/osmanertem/Desktop/myCustomTemplate',
     when(answers) {
       return answers.templateType == 'custom';
     }
