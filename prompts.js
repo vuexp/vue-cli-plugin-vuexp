@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = [
   {
     name: 'applicationId',
@@ -32,6 +34,23 @@ Example: com.company.app`;
     default: true
   },
   {
+    name: 'vuexpRouter',
+    type: 'confirm',
+    message: 'Use VueXP Router? (Default: Yes)',
+    default: true,
+    when: () => {
+      try {
+        // Attempt to read package.json
+        const pkg = require(path.join(process.cwd(), 'package.json'));
+        // Don't show if vue router is already set
+        return !pkg.dependencies['vue-router'];
+      } catch (e) {
+        console.log('Unable to read package.json');
+        return false;
+      }
+    }
+  },
+  {
     name: 'templateType',
     type: 'list',
     message: 'What type of template do you want to start with? (Default: Simple)',
@@ -55,6 +74,7 @@ Example: com.company.app`;
     name: 'customTemplatePath',
     type: 'input',
     message: 'Enter custom template path',
+    default: '/Users/osmanertem/Desktop/myCustomTemplate',
     when(answers) {
       return answers.templateType == 'custom';
     }
