@@ -68,7 +68,7 @@ Example: com.company.app`;
         value: 'custom'
       }
     ],
-    default: 'custom'
+    default: 'simple'
   },
   {
     name: 'customTemplatePath',

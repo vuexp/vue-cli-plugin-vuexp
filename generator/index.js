@@ -142,14 +142,14 @@ module.exports = async (api, options, rootOptions) => {
       fs.ensureFileSync(api.resolve(path.join(genConfig.dirPathPrefix, 'babel.config.js')));
       await applyBabelConfig(api, genConfig, 'babel.config.js');
     });
-
-    api.render(async () => {
-      if (options.templateType == 'custom') {
-        await extendPackageJSONWithCustomTemplatesDependencies(api, options.customTemplatePath);
-        await copyCustomTemplate(options.customTemplatePath);
-      }
-    });
   }
+
+  api.render(async () => {
+    if (options.customTemplatePath) {
+      await extendPackageJSONWithCustomTemplatesDependencies(api, options.customTemplatePath);
+      await copyCustomTemplate(options.customTemplatePath);
+    }
+  });
 
   // if the project is using eslint, add some global variables
   // to the eslintConfig in order to avoid no-def errors
@@ -347,7 +347,7 @@ const applyBabelConfig = (module.exports.applyBabelConfig = async (api, genConfi
         presets: ['@vue/app']
       });
       // eslint-disable-next-line no-unused-vars
-      replace(babelReplaceOptions, (err, changes) => { 
+      replace(babelReplaceOptions, (err, changes) => {
         if (err) throw err;
       });
     });
@@ -784,12 +784,13 @@ const extendPackageJSONWithCustomTemplatesDependencies = (module.exports.extendP
   try {
     const packageJSONPath = path.join(srcPathPrefix, 'package.json');
     if (!fs.existsSync(packageJSONPath)) {
+      console.log('package.json does not exists on ', packageJSONPath);
       return;
     }
 
     const templatesPackageJSON = fs.readJsonSync(packageJSONPath, { encoding: 'utf8' });
 
-    let newDeps = {};
+    const newDeps = {};
     for (let currentDepName in templatesPackageJSON.dependencies) {
       if (!api.hasPlugin(currentDepName)) {
         newDeps[currentDepName] = templatesPackageJSON.dependencies[currentDepName];
@@ -797,7 +798,7 @@ const extendPackageJSONWithCustomTemplatesDependencies = (module.exports.extendP
     }
     api.extendPackage({ dependencies: newDeps });
 
-    let newDevDeps = {};
+    const newDevDeps = {};
     for (let currentDevDepName in templatesPackageJSON.devDependencies) {
       if (!api.hasPlugin(currentDevDepName)) {
         newDevDeps[currentDevDepName] = templatesPackageJSON.devDependencies[currentDevDepName];
