@@ -144,6 +144,13 @@ module.exports = async (api, options, rootOptions) => {
     });
   }
 
+  api.render(async () => {
+    if (options.customTemplatePath) {
+      await extendPackageJSONWithCustomTemplatesDependencies(api, options.customTemplatePath);
+      await copyCustomTemplate(options.customTemplatePath);
+    }
+  });
+
   // if the project is using eslint, add some global variables
   // to the eslintConfig in order to avoid no-def errors
   if (api.hasPlugin('eslint')) {
@@ -209,7 +216,7 @@ module.exports = async (api, options, rootOptions) => {
     await routerSetup(api, rootOptions, genConfig.dirPathPrefix, genConfig.jsOrTs, commonRenderOptions.vuexpRouter);
 
     // add vuex statements to src/main.*s
-    await vuexSetup(api, options, genConfig.dirPathPrefix, genConfig.jsOrTs, genConfig.nativeAppPathModifier);
+    await vuexSetup(api, options, genConfig.dirPathPrefix, genConfig.jsOrTs);
   });
 
   api.onCreateComplete(async () => {
@@ -308,7 +315,7 @@ const routerSetup = (module.exports.routerSetup = async (api, rootOptions, fileP
 // setup Vuex options
 // for new projects it will write to changes as normal
 // and for existing projects it will write  changes to the ./vuexp-example directory
-const vuexSetup = (module.exports.vuexSetup = async (api, options, filePathPrefix, jsOrTs, nativeAppPathModifier) => {
+const vuexSetup = (module.exports.vuexSetup = async (api, options, filePathPrefix, jsOrTs) => {
   try {
     if (api.hasPlugin('vuex')) {
       // if we're using vuex, then we have to modify the main.native file
@@ -770,6 +777,48 @@ const getAllFilesInDirStructure = (module.exports.replaceInFile = async (srcPath
   } catch (error) {
     console.log(error);
   }
+});
+
+// utility function used to extend package.json with the dependencies from custom template's package.json
+const extendPackageJSONWithCustomTemplatesDependencies = (module.exports.extendPackageJSONWithCustomTemplatesDependencies = async (api, srcPathPrefix) => {
+  try {
+    const packageJSONPath = path.join(srcPathPrefix, 'package.json');
+    if (!fs.existsSync(packageJSONPath)) {
+      console.log('package.json does not exists on ', packageJSONPath);
+      return;
+    }
+
+    const templatesPackageJSON = fs.readJsonSync(packageJSONPath, { encoding: 'utf8' });
+
+    const newDeps = {};
+    for (let currentDepName in templatesPackageJSON.dependencies) {
+      if (!api.hasPlugin(currentDepName)) {
+        newDeps[currentDepName] = templatesPackageJSON.dependencies[currentDepName];
+      }
+    }
+    api.extendPackage({ dependencies: newDeps });
+
+    const newDevDeps = {};
+    for (let currentDevDepName in templatesPackageJSON.devDependencies) {
+      if (!api.hasPlugin(currentDevDepName)) {
+        newDevDeps[currentDevDepName] = templatesPackageJSON.devDependencies[currentDevDepName];
+      }
+    }
+    api.extendPackage({ devDependencies: newDevDeps });
+  } catch (error) {
+    throw error;
+  }
+});
+
+// copies custom template to generator/templates folder.
+const copyCustomTemplate = (module.exports.copyCustomTemplate = async (customTemplatePath) => {
+  if (fs.existsSync(path.resolve(__dirname, 'templates', 'custom'))) {
+    fs.removeSync(path.resolve(__dirname, 'templates', 'custom'));
+  }
+
+  fs.mkdirSync(path.resolve(__dirname, 'templates', 'custom'));
+  fs.mkdirSync(path.resolve(__dirname, 'templates', 'custom', 'src'));
+  fs.copySync(path.resolve(customTemplatePath, 'src'), path.resolve(__dirname, 'templates', 'custom', 'src'));
 });
 
 // utility function used to remove sections of strings from files
