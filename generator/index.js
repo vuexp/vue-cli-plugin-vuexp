@@ -81,7 +81,7 @@ module.exports = async (api, options, rootOptions) => {
     },
     dependencies: {
       'nativescript-vue': '2.4.0',
-      vuexp: 'git://github.com/vuexp/vuexp.git#integration/v0.3.1',
+      vuexp: 'git://github.com/vuexp/vuexp.git#development',
       'tns-core-modules': '6.0.6'
     },
     devDependencies: {
