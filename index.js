@@ -518,9 +518,11 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
             .uses.get('sass-loader')
             .get('options'),
           {
-            minimize: false,
-            url: false,
-            data: '$PLATFORM: ' + platform + ';'
+            sassOptions: {
+              minimize: false,
+              url: false
+            },
+            prependData: '$PLATFORM: ' + platform + ';'
           }
         )
       )
@@ -580,9 +582,11 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
             .uses.get('sass-loader')
             .get('options'),
           {
-            minimize: false,
-            url: false,
-            data: '$PLATFORM: ' + platform
+            sassOptions: {
+              minimize: false,
+              url: false
+            },
+            prependData: '$PLATFORM: ' + platform
           }
         )
       )
