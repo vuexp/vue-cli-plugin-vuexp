@@ -91,7 +91,7 @@ module.exports = async (api, options, rootOptions) => {
       'node-sass': '4.12.0',
       'string-replace-loader': '2.1.1',
       rimraf: '2.6.3',
-      'sass-loader': '7.1.0'
+      'sass-loader': '8.0.0'
       // webpack: '4.28.4',
       // 'webpack-cli': '^3.3.2'
     }
