@@ -295,28 +295,17 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
         .end();
 
     config.optimization.minimize(Boolean(production));
-    config.optimization
-      .minimizer([
-        new TerserPlugin({
-          parallel: true,
-          cache: true,
-          sourceMap: isAnySourceMapEnabled,
-          terserOptions: {
-            output: {
-              comments: false,
-              semicolons: !isAnySourceMapEnabled
-            },
-            compress: {
-              // The Android SBG has problems parsing the output
-              // when these options are enabled
-              collapse_vars: platform !== 'android',
-              sequences: platform !== 'android'
-            },
-            keep_fnames: true
-          }
-        })
-      ])
-      .end();
+
+    config.optimization.minimizer('terser').tap((args) => {
+      args[0].parallel = true
+      args[0].cache = true
+      args[0].sourceMap = isAnySourceMapEnabled
+      args[0].terserOptions.compress.collapse_vars = platform !== 'android'
+      args[0].terserOptions.compress.sequences = platform !== 'android'
+      args[0].terserOptions.keep_fnames = true
+      return args
+    })
+    .end();
 
     config.module
       .rule('native-loaders')
@@ -456,7 +445,12 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
             .uses.get('css-loader')
             .get('options'),
           {
-            minimize: false,
+            /**
+             * compile error with new version ;
+             * options has an unknown property 'minimize'. These properties are valid:
+                object { url?, import?, modules?, sourceMap?, importLoaders?, localsConvention?, onlyLocals? }
+             */
+            // minimize: false,
             url: false,
             importLoaders: 1
           }
@@ -501,9 +495,15 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
             .uses.get('css-loader')
             .get('options'),
           {
-            minimize: false,
+             
+            /**
+             * compile error with new version ;
+             * options has an unknown property 'minimize'. These properties are valid:
+                object { url?, import?, modules?, sourceMap?, importLoaders?, localsConvention?, onlyLocals? }
+             */
+            // minimize: false,
             url: false,
-            data: '$PLATFORM: ' + platform + ';'
+            // data: '$PLATFORM: ' + platform + ';'
           }
         )
       )
@@ -565,9 +565,14 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
             .uses.get('css-loader')
             .get('options'),
           {
-            minimize: false,
+            /**
+             * compile error with new version ;
+             * options has an unknown property 'minimize'. These properties are valid:
+                object { url?, import?, modules?, sourceMap?, importLoaders?, localsConvention?, onlyLocals? }
+             */
+            // minimize: false,
             url: false,
-            data: '$PLATFORM: ' + platform
+            // data: '$PLATFORM: ' + platform
           }
         )
       )
@@ -625,7 +630,12 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
             .uses.get('css-loader')
             .get('options'),
           {
-            minimize: false,
+            /**
+             * compile error with new version ;
+             * options has an unknown property 'minimize'. These properties are valid:
+                object { url?, import?, modules?, sourceMap?, importLoaders?, localsConvention?, onlyLocals? }
+             */
+            // minimize: false,
             url: false
           }
         )
@@ -641,6 +651,7 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
             .uses.get('stylus-loader')
             .get('options'),
           {
+            
             minimize: false,
             url: false
           }
@@ -681,7 +692,13 @@ const nativeConfig = (api, projectOptions, env, projectRoot, platform) => {
             .uses.get('css-loader')
             .get('options'),
           {
-            minimize: false,
+
+            /**
+             * compile error with new version ;
+             * options has an unknown property 'minimize'. These properties are valid:
+                object { url?, import?, modules?, sourceMap?, importLoaders?, localsConvention?, onlyLocals? }
+             */
+            // minimize: false,
             url: false
           }
         )
