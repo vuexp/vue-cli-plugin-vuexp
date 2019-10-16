@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-vuexp",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A vue cli 3.x plugin for Vuexp",
   "main": "index.js",
   "files": [
